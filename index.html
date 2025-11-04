@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auralia Dental & Cosmetic Excellence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #eee7e2;
+      color: #222;
+      overflow-x: hidden;
+    }
+    .font-serif {
+      font-family: 'Playfair Display', serif;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #b8962f, #f2d16b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text-accent {
+      color: #5f1a1f;
+    }
+    .sparkle-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    section {
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="scroll-smooth">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-8 py-5 bg-[#eee7e2] border-b border-[#e8e5df] sticky top-0 z-50 text-[#5f1a1f]">
+    <img src="/Assets/Landscape logo.png" alt="Auralia Logo" class="h-14">
+    <ul class="flex space-x-8 text-sm font-medium">
+      <li><a href="#about" class="hover:text-[#b8962f] transition">About</a></li>
+      <li><a href="#services" class="hover:text-[#b8962f] transition">Services</a></li>
+      <li><a href="#doctors" class="hover:text-[#b8962f] transition">Doctors</a></li>
+      <li><a href="#reviews" class="hover:text-[#b8962f] transition">Reviews</a></li>
+      <li><a href="#appointment" class="hover:text-[#b8962f] transition">Appointment</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="relative h-[90vh] flex flex-col items-center justify-center text-center bg-cover bg-center" 
+    style="background-image: url('/Assets/clinic\ banner.png');">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#00000099] via-[#00000066] to-[#00000033]"></div>
+    <div class="relative z-10 px-6">
+      <h1 class="text-5xl md:text-6xl font-serif text-[#f5d77a] mb-4 drop-shadow-xl tracking-wide">
+        Auralia Dental & Cosmetic Excellence
+      </h1>
+      <p class="text-lg md:text-xl text-[#fff9ea] font-medium mb-6 drop-shadow-md">
+        Refined Aesthetics, Timeless Smiles
+      </p>
+      <a href="#appointment" 
+         class="px-6 py-3 rounded-full bg-[#d4af37] text-[#111111] font-semibold hover:bg-[#b8962f] transition-shadow shadow-lg hover:shadow-xl">
+         Book Now
+      </a>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="about" class="py-24 px-6 md:px-20">
+    <canvas id="sparkles-about" class="sparkle-bg"></canvas>
+    <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-serif text-accent mb-4">About Auralia</h2>
+        <p class="leading-relaxed text-[#333]">
+          At Auralia Dental & Cosmetic Excellence, we combine modern dentistry with timeless aesthetics. 
+          Our goal is to craft natural smiles that express confidence and sophistication. Every detail is designed for comfort, care, and perfection.
+        </p>
+      </div>
+      <img src="/Assets/2025-10-31 (1) copy.jpg" 
+           alt="Clinic Interior" class="rounded-2xl shadow-xl">
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-24 px-6 md:px-20 bg-[#f1eee8]">
+    <canvas id="sparkles-services" class="sparkle-bg"></canvas>
+    <div class="relative z-10 text-center mb-12">
+      <h2 class="text-3xl font-serif text-accent mb-2">Our Services</h2>
+      <p class="text-[#444]">Precision, artistry, and care in every treatment.</p>
+    </div>
+    <div class="relative z-10 grid md:grid-cols-3 gap-10">
+      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition border-t-4 border-[#d4af37]">
+        <h3 class="font-serif text-xl mb-3 text-accent">Smile Design</h3>
+        <p class="text-sm text-[#555]">Custom smile makeovers using aesthetic dental principles.</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition border-t-4 border-[#d4af37]">
+        <h3 class="font-serif text-xl mb-3 text-accent">Cosmetic Dentistry</h3>
+        <p class="text-sm text-[#555]">Whitening, veneers, and restorations that radiate natural confidence.</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition border-t-4 border-[#d4af37]">
+        <h3 class="font-serif text-xl mb-3 text-accent">Facial Aesthetics</h3>
+        <p class="text-sm text-[#555]">Subtle facial enhancements for harmonious, youthful results.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="py-24 px-6 md:px-20">
+    <canvas id="sparkles-gallery" class="sparkle-bg"></canvas>
+    <div class="relative z-10 text-center mb-12">
+      <h2 class="text-3xl font-serif text-accent mb-2">Gallery</h2>
+      <p class="text-[#444]">A glimpse into the artistry of our results.</p>
+    </div>
+    <div class="relative z-10 columns-2 md:columns-3 gap-4 space-y-4">
+      <img src="/Assets/2025-10-31 (1).webp" class="rounded-lg shadow-md" alt="">
+      <img src="/Assets/2025-10-31 (2).webp" class="rounded-lg shadow-md" alt="">
+      <img src="/Assets/2025-10-31.webp" class="rounded-lg shadow-md" alt="">
+    </div>
+  </section>
+  <!-- Doctors Section -->
+  <section id="doctors" class="py-24 px-6 md:px-20">
+    <canvas id="sparkles-doctors" class="sparkle-bg"></canvas>
+    <div class="relative z-10 text-center mb-12">
+      <h2 class="text-3xl font-serif text-accent mb-2">Our Doctors</h2>
+      <p class="text-[#444]">Meet the professionals behind every confident smile.</p>
+    </div>
+    <div class="relative z-10 grid md:grid-cols-3 gap-10">
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Aleena Romeo</h3>
+        <h4 class="font-serif text-accent">BDS,FMAC</h4>
+        <p class="text-sm text-[#555]">Chief Dental Surgeon & Aesthetic Consultant</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Naheema</h3>
+        <h4 class="font-serif text-accent">BDS,FMAC</h4>
+        <p class="text-sm text-[#555]">Resident Dentist & Cosmetologist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Nebin Noushad</h3>
+        <h4 class="font-serif text-accent">BDS</h4>
+        <p class="text-sm text-[#555]">Resident Dentist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Namitha</h3>
+        <h4 class="font-serif text-accent">MDS,FIBOMS,FMAC,OMFS</h4>
+        <p class="text-sm text-[#555]">Oral and Maxillofacial Surgeon & Cosmetologist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Krishnalal</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Oral and Maxillofacial Surgeon</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Amal Lathief</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Prosthodontist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Vishnu S</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Endodontist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Manu Bhaskar</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Implantologist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Deepthi Cherian</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Periodontist & Laser Specialist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Amrutha</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Orthodontist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Tahir CV</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Orthodontist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Ahalia</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Pedodontist</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-xl text-accent mb-1">Dr. Athul Vishwan</h3>
+        <h4 class="font-serif text-accent">MDS</h4>
+        <p class="text-sm text-[#555]">Fellowship in Endodontics</p>
+      </div>
+    </div>
+  </section>
+
+<!-- Reviews Section (Dynamic from Elfsight) -->
+<section id="reviews" class="py-20 px-6 bg-[#f8f6f2]">
+  <div class="text-center mb-12">
+    <h2 class="text-3xl font-serif text-[#d4af37] mb-3">Patient Reviews</h2>
+    <p class="text-gray-600">See what our patients say about Auralia Dental and Cosmetic Excellence</p>
+  </div>
+
+  <!-- Elfsight Google Reviews Widget -->
+  <div class="elfsight-app-b1453712-25fd-43eb-86c0-d7bb48911a72" data-elfsight-app-lazy></div>
+</section>
+
+  <!-- Appointment Booking Section -->
+<section id="appointment" class="py-20 bg-[#f8f7f3] text-center">
+  <h2 class="text-3xl font-serif text-[#5f1a1f] mb-8">Book Your Appointment</h2>
+
+  <form id="appointmentForm" class="max-w-lg mx-auto grid gap-4">
+    <input type="text" id="name" placeholder="Full Name"
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]" />
+
+    <input type="tel" id="phone" placeholder="WhatsApp Number (with country code)"
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]" />
+
+    <input type="date" id="date"
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]" />
+
+    <input type="time" id="time"
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]" />
+
+    <textarea id="message" placeholder="Any specific concern?"
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]"></textarea>
+
+    <button type="submit"
+      class="bg-[#d4af37] text-white rounded-full py-3 hover:bg-[#b8962f] transition">Book Now</button>
+  </form>
+  
+</section>
+
+  <!-- Footer -->
+  <footer class="bg-[#93694a] text-center py-6 text-sm text-white">
+    <img src="/Assets/Auralia vertical Logo .png" alt="Auralia Logo" class="h-10 mx-auto mb-3"> <!-- Larger logo -->
+    <p>&copy; 2025 Auralia Dental & Cosmetic Excellence. All rights reserved.</p>
+  </footer>
+
+  <!-- Elfsight Google Reviews | Untitled Google Reviews -->
+
+  <script src="https://elfsightcdn.com/platform.js" async></script>
+
+  <!-- Sweet alert cdn -->
+
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Enhanced Three.js Sparkle Script -->
+  <script>
+    function initSparkles(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+      const geometry = new THREE.BufferGeometry();
+      const vertices = [];
+      const particleCount = 1200; // Increased sparkle density
+      for (let i = 0; i < particleCount; i++) {
+        vertices.push((Math.random() - 0.5) * 40);
+        vertices.push((Math.random() - 0.5) * 25);
+        vertices.push((Math.random() - 0.5) * 25);
+      }
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+      const material = new THREE.PointsMaterial({
+        color: 0xf5d77a, // brighter golden tone
+        size: 0.1,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+      });
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+      camera.position.z = 7;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        points.rotation.y += 0.0008;
+        points.rotation.x += 0.0005;
+        material.opacity = 0.7 + Math.sin(Date.now() * 0.0015) * 0.3;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+      });
+    }
+
+    ['sparkles-about', 'sparkles-services', 'sparkles-gallery', 'sparkles-contact'].forEach(initSparkles);
+  </script>
+
+<!-- Whats app message Implementation -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("appointmentForm");
+  const dateInput = document.getElementById("date");
+  const timeInput = document.getElementById("time");
+
+  // ✅ Restrict to current and future dates
+  const today = new Date().toISOString().split("T")[0];
+  dateInput.setAttribute("min", today);
+
+  // ⏰ Update time range dynamically based on the selected day
+  dateInput.addEventListener("change", function() {
+    const selectedDate = new Date(this.value);
+    const day = selectedDate.getDay(); // 0 = Sunday
+    if (day === 0) {
+      timeInput.setAttribute("min", "10:30");
+      timeInput.setAttribute("max", "16:30");
+    } else {
+      timeInput.setAttribute("min", "09:30");
+      timeInput.setAttribute("max", "19:30");
+    }
+    timeInput.value = "";
+  });
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const message = document.getElementById("message").value.trim();
+
+    // Simple validation with SweetAlert
+    if (!name || !phone || !date || !time) {
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Fields",
+        text: "Please fill in all required details before booking.",
+        confirmButtonColor: "#d4af37"
+      });
+      return;
+    }
+
+    const phonePattern = /^[0-9]{10,15}$/;
+    if (!phonePattern.test(phone)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Number",
+        text: "Please enter a valid WhatsApp number (with country code if needed).",
+        confirmButtonColor: "#d4af37"
+      });
+      return;
+    }
+
+    // Validate time range manually
+    const selectedDate = new Date(date);
+    const day = selectedDate.getDay();
+    const [hour, minute] = time.split(":").map(Number);
+    const totalMinutes = hour * 60 + minute;
+
+    if (day === 0) {
+      if (totalMinutes < 630 || totalMinutes > 990) { // 10:30–16:30
+        Swal.fire({
+          icon: "error",
+          title: "Outside Sunday Hours",
+          text: "Sunday appointments are available only from 10:30 AM to 4:30 PM.",
+          confirmButtonColor: "#d4af37"
+        });
+        return;
+      }
+    } else {
+      if (totalMinutes < 570 || totalMinutes > 1170) { // 9:30–19:30
+        Swal.fire({
+          icon: "error",
+          title: "Outside Clinic Hours",
+          text: "Appointments are available only from 9:30 AM to 7:30 PM on weekdays.",
+          confirmButtonColor: "#d4af37"
+        });
+        return;
+      }
+    }
+
+    // ✅ WhatsApp Redirect
+    const clinicNumber = "918089485892"; // replace with your actual WhatsApp number
+    const text = `🦷 *New Appointment Request*%0A
+*Name:* ${name}%0A
+*WhatsApp:* ${phone}%0A
+*Date:* ${date}%0A
+*Time:* ${time}%0A
+*Concern:* ${message || "N/A"}%0A`;
+
+    // Show success alert before redirect
+    Swal.fire({
+      icon: "success",
+      title: "Appointment Ready!",
+      text: "Redirecting you to WhatsApp to confirm your appointment.",
+      confirmButtonColor: "#d4af37",
+      showConfirmButton: false,
+      timer: 2000
+    });
+
+    setTimeout(() => {
+      window.open(`https://wa.me/${clinicNumber}?text=${text}`, "_blank");
+      form.reset();
+    }, 2000);
+  });
+});
+</script>
+</body>
+</html>
