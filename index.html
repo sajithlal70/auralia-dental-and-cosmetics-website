@@ -9,12 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    header {
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
     body {
       font-family: 'Inter', sans-serif;
       background-color: #eee7e2;
@@ -24,124 +18,197 @@
     .font-serif {
       font-family: 'Playfair Display', serif;
     }
-    .gold-gradient {
-      background: linear-gradient(135deg, #b8962f, #f2d16b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
     .text-accent {
       color: #5f1a1f;
     }
+
     .sparkle-bg {
       position: absolute;
       inset: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
+      pointer-events: none;
     }
-    section {
+    
+    /* Mobile Menu */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    
+    /* Video Styles */
+    .video-thumb {
       position: relative;
-      overflow: hidden;
     }
-
-      /* Smooth fade animation */
-  .fade-in {
-    animation: fadeIn 0.5s ease forwards;
-  }
-
-  @keyframes fadeIn {
-    from {
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      background: rgba(0,0,0,0.25);
       opacity: 0;
-      transform: translateY(20px);
+      transition: opacity 0.3s ease;
+      border-radius: 0.5rem;
     }
-    to {
+    .video-thumb:hover .play-overlay {
       opacity: 1;
-      transform: translateY(0);
     }
-  }
+    
+    /* Animations */
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .play-overlay {
+        font-size: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body class="scroll-smooth">
 
   <!-- Navbar -->
-    <nav class="flex justify-between items-center px-8 py-5 
-        bg-[#eee7e2]/60 backdrop-blur-xl border-b border-[#e8e5df]/40 
-        sticky top-0 z-50 text-[#5f1a1f] shadow-lg">
-      
-      <img src="./Assets/Landscape_logo.png" alt="Auralia Logo" class="h-16 object-contain">
+  <nav class="flex justify-between items-center px-4 md:px-8 py-4 md:py-5 
+      bg-[#eee7e2]/60 backdrop-blur-xl border-b border-[#e8e5df]/40 
+      sticky top-0 z-50 text-[#5f1a1f] shadow-lg">
+    
+    <img src="./Assets/Landscape_logo.png" alt="Auralia Logo" class="h-12 md:h-16 object-contain">
 
-      <ul class="flex space-x-10 text-base font-semibold tracking-wide">
-        <li><a href="#about" class="hover:text-[#b8962f] transition-colors duration-200">About</a></li>
-        <li><a href="#services" class="hover:text-[#b8962f] transition-colors duration-200">Services</a></li>
-        <li><a href="#gallery" class="hover:text-[#b8962f] transition-colors duration-200">Gallery</a></li>
-        <li><a href="#doctors" class="hover:text-[#b8962f] transition-colors duration-200">Doctors</a></li>
-        <li><a href="#reviews" class="hover:text-[#b8962f] transition-colors duration-200">Reviews</a></li>
-        <li><a href="#appointment" class="hover:text-[#b8962f] transition-colors duration-200">Appointment</a></li>
-      </ul>
-    </nav>
+    <!-- Desktop Menu -->
+    <ul class="hidden lg:flex space-x-6 xl:space-x-10 text-sm xl:text-base font-semibold tracking-wide">
+      <li><a href="#about" class="hover:text-[#b8962f] transition-colors duration-200">About</a></li>
+      <li><a href="#services" class="hover:text-[#b8962f] transition-colors duration-200">Services</a></li>
+      <li><a href="#gallery" class="hover:text-[#b8962f] transition-colors duration-200">Gallery</a></li>
+      <li><a href="#doctors" class="hover:text-[#b8962f] transition-colors duration-200">Doctors</a></li>
+      <li><a href="#reviews" class="hover:text-[#b8962f] transition-colors duration-200">Reviews</a></li>
+      <li><a href="#appointment" class="hover:text-[#b8962f] transition-colors duration-200">Appointment</a></li>
+    </ul>
+    
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-btn" class="lg:hidden text-2xl focus:outline-none">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+  
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-64 bg-[#5f1a1f] text-white z-50 shadow-2xl lg:hidden">
+    <button id="close-menu" class="absolute top-4 right-4 text-2xl focus:outline-none">
+      <i class="fas fa-times"></i>
+    </button>
+    <ul class="flex flex-col space-y-6 mt-16 px-8 text-lg font-semibold">
+      <li><a href="#about" class="hover:text-[#d4af37] transition-colors menu-link">About</a></li>
+      <li><a href="#services" class="hover:text-[#d4af37] transition-colors menu-link">Services</a></li>
+      <li><a href="#gallery" class="hover:text-[#d4af37] transition-colors menu-link">Gallery</a></li>
+      <li><a href="#doctors" class="hover:text-[#d4af37] transition-colors menu-link">Doctors</a></li>
+      <li><a href="#reviews" class="hover:text-[#d4af37] transition-colors menu-link">Reviews</a></li>
+      <li><a href="#appointment" class="hover:text-[#d4af37] transition-colors menu-link">Appointment</a></li>
+    </ul>
+  </div>
     
   <!-- Hero Section -->
-  <header class="relative h-screen flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat"
+  <header class="relative h-[70vh] md:h-screen flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat"
     style="background-image: url('./Assets/clinic_banner.png');">
     <div class="absolute inset-0 bg-gradient-to-b from-[#00000099] via-[#00000066] to-[#00000033]"></div>
-    <div class="relative z-10 px-6">
-      <h1 class="text-5xl md:text-6xl font-serif text-[#f5d77a] mb-4 drop-shadow-xl tracking-wide">
+    <div class="relative z-10 px-4 md:px-6">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#f5d77a] mb-3 md:mb-4 drop-shadow-xl tracking-wide">
         Auralia Dental & Cosmetic Excellence
       </h1>
-      <p class="text-lg md:text-xl text-[#fff9ea] font-medium mb-6 drop-shadow-md">
+      <p class="text-base md:text-lg lg:text-xl text-[#fff9ea] font-medium mb-4 md:mb-6 drop-shadow-md">
         Refined Aesthetics, Timeless Smiles
       </p>
       <a href="#appointment" 
-         class="px-6 py-3 rounded-full bg-[#d4af37] text-[#111111] font-semibold hover:bg-[#b8962f] transition-shadow shadow-lg hover:shadow-xl">
+         class="inline-block px-5 md:px-6 py-2 md:py-3 rounded-full bg-[#d4af37] text-[#111111] font-semibold hover:bg-[#b8962f] transition-shadow shadow-lg hover:shadow-xl text-sm md:text-base">
          Book Now
       </a>
     </div>
   </header>
 
   <!-- About Section -->
-<section id="about" class="py-24 px-6 md:px-20">
-  <canvas id="sparkles-about" class="sparkle-bg"></canvas>
+  <section id="about" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 relative">
+    <canvas id="sparkles-about" class="sparkle-bg"></canvas>
 
-  <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-    <div>
-      <h2 class="text-3xl font-serif text-accent mb-4">About Auralia</h2>
-      <p class="leading-relaxed text-[#333]">
-        At Auralia Dental & Cosmetic Excellence, we combine modern dentistry with timeless aesthetics. 
-        Our goal is to craft natural smiles that express confidence and sophistication. Every detail is designed for comfort, care, and perfection.
-      </p>
+    <div class="relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      
+      <!-- Text -->
+      <div>
+        <h2 class="text-2xl md:text-3xl font-serif text-accent mb-3 md:mb-4">About Auralia</h2>
+        <p class="leading-relaxed text-[#333] text-sm md:text-base">
+          At Auralia Dental & Cosmetic Excellence, we combine modern dentistry with timeless aesthetics.
+          Our goal is to craft natural smiles that express confidence and sophistication.
+          Every detail is designed for comfort, care, and perfection.
+        </p>
+      </div>
+
+      <!-- Media -->
+      <div class="relative w-full md:max-w-[70%] overflow-hidden rounded-2xl shadow-2xl bg-black">
+
+  <!-- Video (desktop only) -->
+      <video
+        id="aboutVideo"
+        class="hidden md:block w-full aspect-[16/9] min-h-[28rem] md:min-h-[36rem] object-cover"
+        src="./Assets/Auralia_Video_New.mp4"
+        poster="./Assets/Auralia_Video_Poster.jpg"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata">
+      </video>
+
+      <!-- Poster (mobile only) -->
+      <img
+        src="./Assets/Clinic_reception_image.jpg"
+        alt="Auralia Clinic Interior"
+        class="block md:hidden w-full aspect-[16/9] object-cover" />
+
+      <!-- Luxury overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
     </div>
-
-    <div class="flex justify-center">
-      <img src="./Assets/Clinic reception image.jpg"
-           alt="Clinic Interior"
-           class="rounded-2xl shadow-xl w-full md:max-w-[70%]" />
     </div>
-  </div>
-</section>
+  </section>
 
-
-
-    <!-- Services Section -->
-    <section id="services" class="py-24 px-6 md:px-20 bg-[#f1eee8] relative overflow-hidden">
+  <!-- Services Section -->
+  <section id="services" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 bg-[#f1eee8] relative overflow-hidden">
     <canvas id="sparkles-services" class="sparkle-bg"></canvas>
 
-    <div class="relative z-10 text-center mb-16">
-      <h2 class="text-3xl font-serif text-accent mb-2">Our Services</h2>
-      <p class="text-[#444]">Precision, artistry, and care in every treatment.</p>
+    <div class="relative z-10 text-center mb-10 md:mb-16">
+      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Our Services</h2>
+      <p class="text-[#444] text-sm md:text-base">Precision, artistry, and care in every treatment.</p>
     </div>
 
-    <div class="relative z-10 grid md:grid-cols-3 gap-10">
+    <div class="relative z-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
       <!-- Dental Services -->
-      <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
-        <h3 class="font-serif text-2xl mb-4 text-accent">Dental Services</h3>
-        <p class="text-sm text-[#555] mb-6 leading-relaxed">
+      <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
+        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent">Dental Services</h3>
+        <p class="text-xs md:text-sm text-[#555] mb-4 md:mb-6 leading-relaxed">
           Experience exceptional dental care blending precision and artistry.
         </p>
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Cosmetic & Restorative Dentistry
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <p class="text-sm text-[#555] mb-2">Enhance your smile with treatments designed for aesthetics and confidence.</p>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <p class="text-xs md:text-sm text-[#555] mb-2">Enhance your smile with treatments designed for aesthetics and confidence.</p>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>Tooth Whitening</li>
             <li>Veneers</li>
             <li>Tooth Restorations (Fillings / Cosmetic Build-ups)</li>
@@ -149,44 +216,44 @@
           </ul>
         </details>
 
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Preventive Dentistry
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>Tooth Cleaning (Scaling & Polishing)</li>
             <li>Pediatric Dental Treatments</li>
           </ul>
         </details>
 
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Prosthodontics
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>Partial & Complete Dentures</li>
             <li>Dental Implants and Surgery</li>
           </ul>
         </details>
 
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Endodontics
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>Root Canal Treatments</li>
           </ul>
         </details>
 
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Orthodontics & Aligners
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>Orthodontic Treatments (Braces)</li>
             <li>Dental Aligners (Clear Aligners)</li>
           </ul>
@@ -194,18 +261,18 @@
       </div>
 
       <!-- Cosmetic Dentistry -->
-      <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
-        <h3 class="font-serif text-2xl mb-4 text-accent">Cosmetic Dentistry</h3>
-        <p class="text-sm text-[#555] mb-6 leading-relaxed">
+      <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
+        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent">Cosmetic Dentistry</h3>
+        <p class="text-xs md:text-sm text-[#555] mb-4 md:mb-6 leading-relaxed">
           Radiate natural confidence through customized cosmetic solutions.
         </p>
 
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Skin Rejuvenation & Glow Treatments
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>HydraFacial</li>
             <li>Vitamin Facial</li>
             <li>BB Glow Mesotherapy</li>
@@ -215,12 +282,12 @@
           </ul>
         </details>
 
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Advanced Regenerative Therapies
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>Vampire Facial</li>
             <li>PRP for Skin & Hair</li>
             <li>GFC for Skin & Hair</li>
@@ -230,18 +297,18 @@
       </div>
 
       <!-- Facial Aesthetics -->
-      <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
-        <h3 class="font-serif text-2xl mb-4 text-accent">Facial Aesthetics</h3>
-        <p class="text-sm text-[#555] mb-6 leading-relaxed">
+      <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
+        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent">Facial Aesthetics</h3>
+        <p class="text-xs md:text-sm text-[#555] mb-4 md:mb-6 leading-relaxed">
           Subtle enhancements that harmonize facial features for youthful elegance.
         </p>
 
-        <details class="group border-t border-[#eee] pt-4">
-          <summary class="cursor-pointer font-semibold text-[#333] mb-3 flex justify-between items-center">
+        <details class="group border-t border-[#eee] pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
             Cosmetic Enhancements
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
             <li>Microblading (Eyebrows)</li>
             <li>Lip Micropigmentation</li>
             <li>Warts & Skin Tag Removal</li>
@@ -251,352 +318,343 @@
     </div>
   </section>
 
-<section id="gallery" class="py-24 px-6 md:px-20 bg-[#f1eee8] relative overflow-hidden">
-  <canvas id="sparkles-gallery" class="sparkle-bg"></canvas>
+  <!-- Gallery Section -->
+  <section id="gallery" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 bg-[#f1eee8] relative overflow-hidden">
+    <canvas id="sparkles-gallery" class="sparkle-bg"></canvas>
 
-  <div class="relative z-10 text-center mb-16">
-    <h2 class="text-3xl font-serif text-accent mb-2">Gallery</h2>
-    <p class="text-[#444]">A glimpse into the artistry of our clinic and work.</p>
-  </div>
-
-  <!-- Clinic Interior Gallery -->
-  <div class="relative z-10 mb-20">
-    <h3 class="text-2xl font-serif text-accent text-center mb-6">The Auralia Experience</h3>
-    <div id="interior-gallery" class="grid grid-cols-2 md:grid-cols-5 gap-4 transition-all duration-500">
-      <img src="./Assets/Front_Door.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Clinic Front Image">
-      <img src="./Assets/Clinic_reception_image.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Patients Waiting Area">
-      <img src="./Assets/Reception_img.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Clinic Reception Image">
-      <img src="./Assets/Patients_Wating _Area_2.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Patients Wating _Area">
-      <img src="./Assets/Pharmacy_img.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Pharmacy Image">
-      <img src="./Assets/Doctors_Room_1.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Doctors Room">
-      <img src="./Assets/Skin_Room_1_img_2.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room Image">
-      <img src="./Assets/Skin_Room_2_Img.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room image">
-      <img src="./Assets/Dental_Room_1_img.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
-      <img src="./Assets/Dental_Room_2.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
-
-      <!-- Hidden Images -->
-      <img src="./Assets/Patients_waiting_area.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Patients Waiting Area">
-      <img src="./Assets/Sterilization_room.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Sterilization Room">
-      <img src="./Assets/Dental_Room_1_img.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Dental Room Image">
-      <img src="./Assets/Skin_Room_1_img.jpg" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Skin Room Image">
-
-
-    </div>
-    <div class="text-center mt-6">
-      <button id="showMoreInterior" class="px-6 py-2 bg-[#d4af37] text-white rounded-full text-sm hover:bg-[#c19c2b] transition">Show More</button>
-    </div>
-  </div>
-
-  <!-- Clinic Work Gallery -->
-  <div class="relative z-10">
-    <h3 class="text-2xl font-serif text-accent text-center mb-6">Treatment Gallery</h3>
-    <div id="work-gallery" class="grid grid-cols-2 md:grid-cols-5 gap-4 transition-all duration-500">
-      <!-- <img src="/Assets/work-1.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="">
-      <img src="./Assets/work-2.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="">
-      <img src="./Assets/work-3.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="">
-      <img src="./Assets/work-4.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="">
-      <img src="./Assets/work-5.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt=""> -->
-
-      <!-- Hidden Images -->
-      <!-- <img src="/Assets/work-6.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="">
-      <img src="./Assets/work-7.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="">
-      <img src="./Assets/work-8.webp" class="gallery-img h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt=""> -->
-    </div>
-    <!-- <div class="text-center mt-6">
-      <button id="showMoreWork" class="px-6 py-2 bg-[#d4af37] text-white rounded-full text-sm hover:bg-[#c19c2b] transition">Show More</button>
-    </div> -->
-  </div>
-
-  <!-- Lightbox Modal -->
-  <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50">
-    <span id="closeLightbox" class="absolute top-6 right-8 text-white text-3xl cursor-pointer hover:text-[#d4af37]">&times;</span>
-    <img id="lightboxImg" class="max-h-[90%] max-w-[90%] rounded-lg shadow-2xl transition-all duration-300" src="" alt="">
-  </div>
-</section>
-
-
-<!-- Doctors Section -->
-<section id="doctors" class="py-24 px-6 md:px-20 relative overflow-hidden">
-  <canvas id="sparkles-doctors" class="sparkle-bg"></canvas>
-
-  <div class="relative z-10 text-center mb-12">
-    <h2 class="text-3xl font-serif text-accent mb-2">Our Doctors</h2>
-    <p class="text-[#444]">Meet the professionals behind every confident smile.</p>
-  </div>
-
-  <div id="doctor-grid" class="relative z-10 grid md:grid-cols-3 gap-10">
-    <!-- Doctor Cards -->
-    <div class="doctor-card bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Aleena Romeo</h3>
-      <h4 class="font-serif text-accent">BDS, FMAC</h4>
-      <p class="text-sm text-[#555]">Chief Dental Surgeon & Aesthetic Consultant</p>
+    <div class="relative z-10 text-center mb-10 md:mb-16">
+      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Gallery</h2>
+      <p class="text-[#444] text-sm md:text-base">A glimpse into the artistry of our clinic and work.</p>
     </div>
 
-    <div class="doctor-card bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Naheema</h3>
-      <h4 class="font-serif text-accent">BDS, FMAC</h4>
-      <p class="text-sm text-[#555]">Resident Dentist & Cosmetologist</p>
+    <!-- Clinic Interior Gallery -->
+    <div class="relative z-10 mb-12 md:mb-20">
+      <h3 class="text-xl md:text-2xl font-serif text-accent text-center mb-4 md:mb-6">The Auralia Experience</h3>
+      <div id="interior-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 transition-all duration-500">
+        <img src="./Assets/Front_Door.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Clinic Front">
+        <img src="./Assets/Clinic_reception_image.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Waiting Area">
+        <img src="./Assets/Reception_img.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Reception">
+        <img src="./Assets/Patients_Wating _Area_2.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Waiting Area">
+        <img src="./Assets/Pharmacy_img.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Pharmacy">
+        <img src="./Assets/Doctors_Room_1.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Doctors Room">
+        <img src="./Assets/Skin_Room_1_img_2.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room">
+        <img src="./Assets/Skin_Room_2_Img.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room">
+        <img src="./Assets/Dental_Room_1_img.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
+        <img src="./Assets/Dental_Room_2.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
+
+        <!-- Hidden Images -->
+        <img src="./Assets/Patients_waiting_area.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Waiting Area">
+        <img src="./Assets/Sterilization_room.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Sterilization">
+        <img src="./Assets/Dental_Room_1_img.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Dental Room">
+        <img src="./Assets/Skin_Room_1_img.jpg" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Skin Room">
+      </div>
+      <div class="text-center mt-4 md:mt-6">
+        <button id="showMoreInterior" class="px-5 md:px-6 py-2 bg-[#d4af37] text-white rounded-full text-xs md:text-sm hover:bg-[#c19c2b] transition">Show More</button>
+      </div>
     </div>
 
-    <div class="doctor-card bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Nebin Noushad</h3>
-      <h4 class="font-serif text-accent">BDS</h4>
-      <p class="text-sm text-[#555]">Resident Dentist</p>
+    <!-- Treatment Gallery -->
+    <div class="relative z-10">
+      <h3 class="text-xl md:text-2xl font-serif text-accent text-center mb-4 md:mb-6">Treatment Gallery</h3>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQq2ly1k8md/">
+          <img src="./Assets/reel_thumb_1.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <div class="play-overlay">▶</div>
+        </div>
+
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRCPdNqkwGV/">
+          <img src="./Assets/reel_thumb_2.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <div class="play-overlay">▶</div>
+        </div>
+
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRT1AKpCtmi/">
+          <img src="./Assets/insta_thumb_3 .jpeg" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <div class="play-overlay">▶</div>
+        </div>
+
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQqb1noEzYi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
+          <img src="./Assets/reel_thumb_4.jpeg" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <div class="play-overlay">▶</div>
+        </div>
+      </div>
     </div>
 
-    <div class="doctor-card bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Namitha</h3>
-      <h4 class="font-serif text-accent">MDS, FIBOMS, FMAC, OMFS</h4>
-      <p class="text-sm text-[#555]">Oral and Maxillofacial Surgeon & Cosmetologist</p>
+    <!-- Video Modal -->
+    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50 p-4">
+      <span id="closeVideo" class="absolute top-4 md:top-6 right-4 md:right-8 text-white text-2xl md:text-3xl cursor-pointer hover:text-[#d4af37]">&times;</span>
+      <div id="videoContainer" class="bg-white rounded-xl p-3 md:p-4 max-w-md w-full shadow-2xl"></div>
+    </div>
+  </section>
+
+  <!-- Doctors Section -->
+  <section id="doctors" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 relative overflow-hidden">
+    <canvas id="sparkles-doctors" class="sparkle-bg"></canvas>
+
+    <div class="relative z-10 text-center mb-8 md:mb-12">
+      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Our Doctors</h2>
+      <p class="text-[#444] text-sm md:text-base">Meet the professionals behind every confident smile.</p>
     </div>
 
-    <div class="doctor-card bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Krishnalal</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Oral and Maxillofacial Surgeon</p>
+    <div id="doctor-grid" class="relative z-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+      <!-- Doctor Cards -->
+      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Aleena Romeo</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">BDS, FMAC</h4>
+        <p class="text-xs md:text-sm text-[#555]">Chief Dental Surgeon & Aesthetic Consultant</p>
+      </div>
+
+      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Naheema</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">BDS, FMAC</h4>
+        <p class="text-xs md:text-sm text-[#555]">Resident Dentist & Cosmetologist</p>
+      </div>
+
+      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Nebin Noushad</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">BDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Resident Dentist</p>
+      </div>
+
+      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Namitha</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS, FIBOMS, FMAC, OMFS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Oral and Maxillofacial Surgeon & Cosmetologist</p>
+      </div>
+
+      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Krishnalal</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Oral and Maxillofacial Surgeon</p>
+      </div>
+
+      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Amal Lathief</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Prosthodontist</p>
+      </div>
+
+      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Vishnu S</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Endodontist</p>
+      </div>
+
+      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Manu Bhaskar</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Implantologist</p>
+      </div>
+
+      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Deepthi Cherian</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Periodontist & Laser Specialist</p>
+      </div>
+
+      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Amrutha</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Orthodontist</p>
+      </div>
+
+      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Tahir CV</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Orthodontist</p>
+      </div>
+
+      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Ahalia</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Pedodontist</p>
+      </div>
+
+      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Athul Vishwan</h3>
+        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
+        <p class="text-xs md:text-sm text-[#555]">Fellowship in Endodontics</p>
+      </div>
     </div>
 
-    <!-- Hidden doctors -->
-    <div class="doctor-card bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Amal Lathief</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Prosthodontist</p>
+    <div class="relative z-10 text-center mt-8 md:mt-12">
+      <button id="show-more-btn" class="bg-[#d4af37] text-white font-medium px-6 md:px-8 py-2 md:py-3 rounded-full shadow-md hover:bg-[#b8962e] transition-all duration-300 text-sm md:text-base">
+        Show More
+      </button>
     </div>
+  </section>
 
-    <div class="doctor-card hidden bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Vishnu S</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Endodontist</p>
+  <!-- Reviews Section -->
+  <section id="reviews" class="py-12 md:py-20 px-4 md:px-6 bg-[#f8f6f2]">
+    <div class="text-center mb-8 md:mb-12">
+      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Patient Reviews</h2>
+      <p class="text-gray-600 text-sm md:text-base">See what our patients say about Auralia Dental and Cosmetic Excellence</p>
     </div>
+    <div class="elfsight-app-b1453712-25fd-43eb-86c0-d7bb48911a72" data-elfsight-app-lazy></div>
+  </section>
 
-    <div class="doctor-card hidden bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Manu Bhaskar</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Implantologist</p>
-    </div>
+  <!-- Appointment Section -->
+  <section id="appointment" class="py-12 md:py-20 bg-[#f8f7f3] text-center px-4">
+    <h2 class="text-2xl md:text-3xl font-serif text-[#5f1a1f] mb-4 md:mb-8">Book Your Appointment</h2>
+    <p class="text-gray-600 mb-6 md:mb-10 text-xs md:text-sm max-w-2xl mx-auto">Experience premium care in a comfortable, serene setting. Schedule your visit now.</p>
+    <form id="appointmentForm" class="max-w-lg mx-auto grid gap-3 md:gap-4">
+      <input type="text" id="name" placeholder="Full Name" class="border border-gray-300 rounded-lg p-2 md:p-3 focus:outline-none focus:border-[#d4af37] text-sm md:text-base" />
 
-    <div class="doctor-card hidden bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Deepthi Cherian</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Periodontist & Laser Specialist</p>
-    </div>
+      <div class="flex">
+        <span class="inline-flex items-center px-2 md:px-3 bg-[#f3f2ec] border border-r-0 border-gray-300 rounded-l-lg text-gray-600 text-xs md:text-sm">+91</span>
+        <input type="tel" id="phone" placeholder="WhatsApp Number" class="w-full border border-gray-300 rounded-r-lg p-2 md:p-3 focus:outline-none focus:border-[#d4af37] text-sm md:text-base" maxlength="10" />
+      </div>
 
-    <div class="doctor-card hidden bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Amrutha</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Orthodontist</p>
-    </div>
+      <input type="date" id="date" class="border border-gray-300 rounded-lg p-2 md:p-3 focus:outline-none focus:border-[#d4af37] text-sm md:text-base" />
 
-    <div class="doctor-card hidden bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Tahir CV</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Orthodontist</p>
-    </div>
+      <input type="time" id="time" class="border border-gray-300 rounded-lg p-2 md:p-3 focus:outline-none focus:border-[#d4af37] text-sm md:text-base" />
 
-    <div class="doctor-card hidden bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Ahalia</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Pedodontist</p>
-    </div>
+      <textarea id="message" placeholder="Any specific concern?" class="border border-gray-300 rounded-lg p-2 md:p-3 focus:outline-none focus:border-[#d4af37] text-sm md:text-base" rows="3"></textarea>
 
-    <div class="doctor-card hidden bg-white p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-      <h3 class="font-serif text-xl text-accent mb-1">Dr. Athul Vishwan</h3>
-      <h4 class="font-serif text-accent">MDS</h4>
-      <p class="text-sm text-[#555]">Fellowship in Endodontics</p>
-    </div>
-  </div>
-
-  <!-- Show More Button -->
-  <div class="relative z-10 text-center mt-12">
-    <button
-      id="show-more-btn"
-      class="bg-[#d4af37] text-white font-medium px-8 py-3 rounded-full shadow-md hover:bg-[#b8962e] transition-all duration-300">
-      Show More
-    </button>
-  </div>
-</section>
-
-<!-- Reviews Section (Dynamic from Elfsight) -->
-<section id="reviews" class="py-20 px-6 bg-[#f8f6f2]">
-  <div class="text-center mb-12">
-    <h2 class="text-3xl font-serif text-accent mb-2">Patient Reviews</h2>
-    <p class="text-gray-600">See what our patients say about Auralia Dental and Cosmetic Excellence</p>
-  </div>
-
-  <!-- Elfsight Google Reviews Widget -->
-  <div class="elfsight-app-b1453712-25fd-43eb-86c0-d7bb48911a72" data-elfsight-app-lazy></div>
-</section>
-
-  <!-- Appointment Booking Section -->
-<section id="appointment" class="py-20 bg-[#f8f7f3] text-center">
-  <h2 class="text-3xl font-serif text-[#5f1a1f] mb-8">Book Your Appointment</h2>
-  <p class="text-gray-600 mb-10 text-sm">Experience premium care in a comfortable, serene setting. Schedule your visit now.</p>
-  <form id="appointmentForm" class="max-w-lg mx-auto grid gap-4">
-    <input type="text" id="name" placeholder="Full Name"
-      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]" />
-
-    <div class="flex">
-      <span class="inline-flex items-center px-3 bg-[#f3f2ec] border border-r-0 border-gray-300 rounded-l-lg text-gray-600 text-sm">+91</span>
-      <input type="tel" id="phone" placeholder="WhatsApp Number"
-        class="w-full border border-gray-300 rounded-r-lg p-3 focus:outline-none focus:border-[#d4af37]" maxlength="10" />
-    </div>
-
-    <input type="date" id="date"
-      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]" />
-
-    <input type="time" id="time"
-      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]" />
-
-    <textarea id="message" placeholder="Any specific concern?"
-      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-[#d4af37]"></textarea>
-
-    <button type="submit"
-      class="bg-[#d4af37] text-white rounded-full py-3 hover:bg-[#b8962f] transition">Book Now</button>
-  </form>
-</section>
+      <button type="submit" class="bg-[#d4af37] text-white rounded-full py-2 md:py-3 hover:bg-[#b8962f] transition text-sm md:text-base font-medium">Book Now</button>
+    </form>
+  </section>
 
   <!-- Footer -->
-<footer class="bg-gradient-to-b from-[#8b6a4e] to-[#5e3d29] text-white py-10 px-6 md:px-16">
-  <div class="grid md:grid-cols-3 gap-10">
-    
-    <!-- Office Location -->
-    <div>
-      <h3 class="text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Our Location</h3>
-      <div class="rounded-xl overflow-hidden shadow-lg ring-1 ring-[#d4af37]/40 mb-3">
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.555531428253!2d76.639!3d9.9816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba65f57c315a2ed%3A0x70c0fd493b782b25!2sAuralia%20Dental%20%26%20Cosmetic%20Excellence!5e1!3m2!1sen!2sin!4v1762454965656!5m2!1sen!2sin"
-          width="100%" 
-          height="200" 
-          style="border:0;" 
-          allowfullscreen 
-          loading="lazy" 
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+  <footer class="bg-gradient-to-b from-[#8b6a4e] to-[#5e3d29] text-white py-8 md:py-10 px-4 md:px-6 lg:px-16">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+      
+      <div>
+        <h3 class="text-base md:text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Our Location</h3>
+        <div class="rounded-xl overflow-hidden shadow-lg ring-1 ring-[#d4af37]/40 mb-3">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.555531428253!2d76.639!3d9.9816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba65f57c315a2ed%3A0x70c0fd493b782b25!2sAuralia%20Dental%20%26%20Cosmetic%20Excellence!5e1!3m2!1sen!2sin!4v1762454965656!5m2!1sen!2sin"
+            width="100%" 
+            height="180" 
+            style="border:0;" 
+            allowfullscreen 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <p class="text-xs md:text-sm text-gray-200">
+          📍 <a href="https://maps.app.goo.gl/QkZCdTBwVWb7rM6w9" target="_blank" class="hover:text-[#d4af37] underline underline-offset-4 transition">View on Google Maps</a>
+        </p>
       </div>
-      <p class="text-sm text-gray-200">
-        📍 <a href="https://maps.app.goo.gl/QkZCdTBwVWb7rM6w9" target="_blank" class="hover:text-[#d4af37] underline underline-offset-4 transition">View on Google Maps</a>
-      </p>
-    </div>
 
-    <!-- Say Hello -->
-    <div>
-      <h3 class="text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Say Hello</h3>
-      <p class="text-sm text-gray-200 mb-3 leading-relaxed">
-        We’d love to hear from you. Reach out with any questions or appointment requests.
-      </p>
-      <p class="text-sm font-medium mb-2">
-        <i class="fa-solid fa-envelope text-[#d4af37] mr-2"></i>
-        <a href="mailto:auralia272@gmail.com" class="hover:text-[#d4af37] transition">auralia272@gmail.com</a>
-      </p>
-      <p class="text-sm font-medium mb-2">
-        <i class="fa-solid fa-phone text-[#d4af37] mr-2"></i>
-        +91 88485 88136
-      </p>
-      <p class="text-sm leading-relaxed">
-        <i class="fa-solid fa-clock text-[#d4af37] mr-2"></i>
-        Mon – Sat: 9:00 AM – 7:00 PM<br>
-        Sun: 10:30 AM – 4:30 PM
-      </p>
-    </div>
-
-    <!-- Social + Contact -->
-    <div>
-      <h3 class="text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Connect With Us</h3>
-      <div class="flex gap-5 mb-4">
-        <a href="#" class="hover:text-[#d4af37] transition transform hover:scale-110"><i class="fa-brands fa-instagram text-2xl"></i></a>
-        <a href="#" class="hover:text-[#d4af37] transition transform hover:scale-110"><i class="fa-brands fa-facebook-f text-2xl"></i></a>
-        <a href="#" class="hover:text-[#d4af37] transition transform hover:scale-110"><i class="fa-brands fa-youtube text-2xl"></i></a>
+      <div>
+        <h3 class="text-base md:text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Say Hello</h3>
+        <p class="text-xs md:text-sm text-gray-200 mb-3 leading-relaxed">
+          We'd love to hear from you. Reach out with any questions or appointment requests.
+        </p>
+        <p class="text-xs md:text-sm font-medium mb-2">
+          <i class="fa-solid fa-envelope text-[#d4af37] mr-2"></i>
+          <a href="mailto:auralia272@gmail.com" class="hover:text-[#d4af37] transition">auralia272@gmail.com</a>
+        </p>
+        <p class="text-xs md:text-sm font-medium mb-2">
+          <i class="fa-solid fa-phone text-[#d4af37] mr-2"></i>
+          +91 88485 88136
+        </p>
+        <p class="text-xs md:text-sm leading-relaxed">
+          <i class="fa-solid fa-clock text-[#d4af37] mr-2"></i>
+          Mon – Sat: 9:00 AM – 7:00 PM<br>
+          Sun: 10:30 AM – 4:30 PM
+        </p>
       </div>
-      <p class="text-sm mt-2">
-        <i class="fa-brands fa-whatsapp text-[#25d366] mr-2"></i>
-        <a href="https://wa.me/918089485892" target="_blank" class="hover:text-[#d4af37] transition font-semibold">Chat on WhatsApp</a>
-      </p>
+
+      <div>
+        <h3 class="text-base md:text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Connect With Us</h3>
+        <div class="flex gap-4 md:gap-5 mb-4">
+          <a href="https://www.instagram.com/auraliaaesthetics/" class="hover:text-[#d4af37] transition transform hover:scale-110"><i class="fa-brands fa-instagram text-xl md:text-2xl"></i></a>
+          <a href="#" class="hover:text-[#d4af37] transition transform hover:scale-110"><i class="fa-brands fa-facebook-f text-xl md:text-2xl"></i></a>
+        </div>
+        <p class="text-xs md:text-sm mt-2">
+          <i class="fa-brands fa-whatsapp text-[#25d366] mr-2"></i>
+          <a href="https://wa.me/918089485892" target="_blank" class="hover:text-[#d4af37] transition font-semibold">Chat on WhatsApp</a>
+        </p>
+      </div>
     </div>
 
-  </div>
+    <div class="border-t border-[#d4af37]/40 mt-6 md:mt-8 pt-4 text-center text-[11px] md:text-xs text-gray-300 tracking-wide">
+      <p>&copy; 2025 <span class="text-[#f4e3c1] font-medium">Auralia Dental & Cosmetic Excellence</span>. All rights reserved.</p>
+    </div>
+  </footer>
 
-  <!-- Footer Bottom -->
-  <div class="border-t border-[#d4af37]/40 mt-8 pt-4 text-center text-[12px] text-gray-300 tracking-wide">
-    <p>&copy; 2025 <span class="text-[#f4e3c1] font-medium">Auralia Dental & Cosmetic Excellence</span>. All rights reserved.</p>
-  </div>
-</footer>
-
-
-
-
-  <!-- Elfsight Google Reviews | Untitled Google Reviews -->
-
+  <script async src="https://www.instagram.com/embed.js"></script>
   <script src="https://elfsightcdn.com/platform.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- Sweet alert cdn -->
-
- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
- <!-- gallery section -->
-
- <script>
-  // Reusable "Show More" toggle function
-  function setupGalleryToggle(buttonId, galleryId) {
-    const button = document.getElementById(buttonId);
-    const gallery = document.getElementById(galleryId);
-    const hiddenImages = gallery.querySelectorAll('.hidden');
-
-    button.addEventListener('click', () => {
-      const isExpanded = button.textContent === 'Show Less';
-      hiddenImages.forEach(img => img.classList.toggle('hidden', isExpanded));
-      button.textContent = isExpanded ? 'Show More' : 'Show Less';
-    });
-  }
-
-  setupGalleryToggle('showMoreInterior', 'interior-gallery');
-  setupGalleryToggle('showMoreWork', 'work-gallery');
-
-  // Lightbox functionality
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const closeLightbox = document.getElementById('closeLightbox');
-
-  document.querySelectorAll('.gallery-img').forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.classList.remove('hidden');
-      lightbox.classList.add('flex');
-    });
-  });
-
-  closeLightbox.addEventListener('click', () => {
-    lightbox.classList.remove('flex');
-    lightbox.classList.add('hidden');
-  });
-
-  // Close on background click
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
-      lightbox.classList.remove('flex');
-      lightbox.classList.add('hidden');
-    }
-  });
-</script>
-
- <!-- Doctors panel -->
-
- <script>
-  const button = document.getElementById("show-more-btn");
-  const hiddenCards = document.querySelectorAll("#doctor-grid .doctor-card.hidden");
-  let expanded = false;
-
-  button.addEventListener("click", () => {
-    expanded = !expanded;
-    hiddenCards.forEach(card => {
-      card.classList.toggle("hidden", !expanded);
-      card.classList.toggle("fade-in", expanded);
-    });
-    button.textContent = expanded ? "Show Less" : "Show More";
-  });
-</script>
-
-  <!-- Enhanced Three.js Sparkle Script -->
   <script>
+    // Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenu = document.getElementById('close-menu');
+    const menuLinks = document.querySelectorAll('.menu-link');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('active');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+    });
+
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Video Modal
+    const videoModal = document.getElementById("videoModal");
+    const videoContainer = document.getElementById("videoContainer");
+    const closeVideo = document.getElementById("closeVideo");
+
+    document.querySelectorAll(".video-thumb").forEach(item => {
+      item.addEventListener("click", () => {
+        const reelUrl = item.dataset.reel;
+        videoContainer.innerHTML = `
+          <blockquote class="instagram-media"
+            data-instgrm-permalink="${reelUrl}"
+            data-instgrm-version="14">
+            <a href="${reelUrl}" target="_blank"></a>
+          </blockquote>
+        `;
+        videoModal.classList.remove("hidden");
+        videoModal.classList.add("flex");
+        setTimeout(() => {
+          if (window.instgrm) instgrm.Embeds.process();
+        }, 200);
+      });
+    });
+
+    closeVideo.addEventListener("click", () => {
+      videoModal.classList.add("hidden");
+      videoModal.classList.remove("flex");
+      videoContainer.innerHTML = "";
+    });
+
+    // Gallery Toggle
+    const showMoreBtn = document.getElementById('showMoreInterior');
+    const interiorGallery = document.getElementById('interior-gallery');
+    const hiddenImages = interiorGallery.querySelectorAll('.hidden');
+
+    showMoreBtn.addEventListener('click', () => {
+      const isExpanded = showMoreBtn.textContent === 'Show Less';
+      hiddenImages.forEach(img => img.classList.toggle('hidden', isExpanded));
+      showMoreBtn.textContent = isExpanded ? 'Show More' : 'Show Less';
+    });
+
+    // Doctors Toggle
+    const doctorBtn = document.getElementById("show-more-btn");
+    const hiddenCards = document.querySelectorAll("#doctor-grid .doctor-card.hidden");
+    let expanded = false;
+
+    doctorBtn.addEventListener("click", () => {
+      expanded = !expanded;
+      hiddenCards.forEach(card => {
+        card.classList.toggle("hidden", !expanded);
+        card.classList.toggle("fade-in", expanded);
+      });
+      doctorBtn.textContent = expanded ? "Show Less" : "Show More";
+    });
+
+    // Three.js Sparkles
     function initSparkles(canvasId) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
@@ -607,7 +665,7 @@
 
       const geometry = new THREE.BufferGeometry();
       const vertices = [];
-      const particleCount = 1200; // Increased sparkle density
+      const particleCount = window.innerWidth < 768 ? 600 : 1200;
       for (let i = 0; i < particleCount; i++) {
         vertices.push((Math.random() - 0.5) * 40);
         vertices.push((Math.random() - 0.5) * 25);
@@ -615,7 +673,7 @@
       }
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
       const material = new THREE.PointsMaterial({
-        color: 0xf5d77a, // brighter golden tone
+        color: 0xf5d77a,
         size: 0.1,
         transparent: true,
         opacity: 0.8,
@@ -641,147 +699,135 @@
       });
     }
 
-    ['sparkles-about', 'sparkles-services', 'sparkles-gallery', 'sparkles-contact'].forEach(initSparkles);
-  </script>
+    ['sparkles-about', 'sparkles-services', 'sparkles-gallery', 'sparkles-doctors'].forEach(initSparkles);
 
-<!-- Whats app message Implementation -->
+    // Appointment Form
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("appointmentForm");
+      const dateInput = document.getElementById("date");
+      const timeInput = document.getElementById("time");
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const form = document.getElementById("appointmentForm");
-  const dateInput = document.getElementById("date");
-  const timeInput = document.getElementById("time");
+      const today = new Date();
+      const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().split("T")[0];
+      dateInput.setAttribute("min", localDate);
 
-  // ✅ Restrict date to today and future (local timezone)
-  const today = new Date();
-  const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
-    .toISOString()
-    .split("T")[0];
-  dateInput.setAttribute("min", localDate);
-
-  // 🕒 Dynamic time range based on selected day
-  dateInput.addEventListener("change", function() {
-    const selectedDate = new Date(this.value);
-    const day = selectedDate.getDay();
-    if (day === 0) {
-      timeInput.setAttribute("min", "10:30");
-      timeInput.setAttribute("max", "16:30");
-    } else {
-      timeInput.setAttribute("min", "09:30");
-      timeInput.setAttribute("max", "19:30");
-    }
-    timeInput.value = "";
-  });
-
-  // ✨ SweetAlert styling for luxury look
-  const swalBase = {
-    customClass: {
-      popup: "rounded-2xl shadow-lg text-[#5f1a1f] bg-[#f8f7f3]",
-      title: "text-lg font-medium font-serif",
-      htmlContainer: "text-sm font-sans text-gray-700",
-      confirmButton: "text-sm px-4 py-2 rounded-full bg-[#d4af37] text-white hover:bg-[#b8962f] focus:outline-none"
-    },
-    buttonsStyling: false
-  };
-
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const message = document.getElementById("message").value.trim();
-
-    if (!name || !phone || !date || !time) {
-      Swal.fire({
-        ...swalBase,
-        icon: "warning",
-        title: "Missing Fields",
-        text: "Please fill in all required details."
+      dateInput.addEventListener("change", function() {
+        const selectedDate = new Date(this.value);
+        const day = selectedDate.getDay();
+        if (day === 0) {
+          timeInput.setAttribute("min", "10:30");
+          timeInput.setAttribute("max", "16:30");
+        } else {
+          timeInput.setAttribute("min", "09:30");
+          timeInput.setAttribute("max", "19:30");
+        }
+        timeInput.value = "";
       });
-      return;
-    }
 
-    // ✅ Validate phone number
-    const phonePattern = /^[0-9]{10}$/;
-    if (!phonePattern.test(phone)) {
-      Swal.fire({
-        ...swalBase,
-        icon: "error",
-        title: "Invalid Number",
-        text: "Enter a valid 10-digit WhatsApp number."
-      });
-      return;
-    }
+      const swalBase = {
+        customClass: {
+          popup: "rounded-2xl shadow-lg text-[#5f1a1f] bg-[#f8f7f3]",
+          title: "text-base md:text-lg font-medium font-serif",
+          htmlContainer: "text-xs md:text-sm font-sans text-gray-700",
+          confirmButton: "text-xs md:text-sm px-3 md:px-4 py-2 rounded-full bg-[#d4af37] text-white hover:bg-[#b8962f] focus:outline-none"
+        },
+        buttonsStyling: false
+      };
 
-    // ✅ Validate date (must be today or future)
-    const selectedDate = new Date(date);
-    const todayCheck = new Date();
-    todayCheck.setHours(0, 0, 0, 0);
-    if (selectedDate < todayCheck) {
-      Swal.fire({
-        ...swalBase,
-        icon: "error",
-        title: "Invalid Date",
-        text: "You can only book appointments for today or a future date."
-      });
-      return;
-    }
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
 
-    // ✅ Validate time slot
-    const day = selectedDate.getDay();
-    const [hour, minute] = time.split(":").map(Number);
-    const totalMinutes = hour * 60 + minute;
+        const name = document.getElementById("name").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const date = document.getElementById("date").value;
+        const time = document.getElementById("time").value;
+        const message = document.getElementById("message").value.trim();
 
-    if (day === 0) {
-      if (totalMinutes < 630 || totalMinutes > 990) {
-        Swal.fire({
-          ...swalBase,
-          icon: "error",
-          title: "Outside Sunday Hours",
-          text: "Sunday appointments are available 10:30 AM – 4:30 PM."
-        });
-        return;
-      }
-    } else {
-      if (totalMinutes < 570 || totalMinutes > 1170) {
-        Swal.fire({
-          ...swalBase,
-          icon: "error",
-          title: "Outside Clinic Hours",
-          text: "Appointments are available 9:30 AM – 7:30 PM."
-        });
-        return;
-      }
-    }
+        if (!name || !phone || !date || !time) {
+          Swal.fire({
+            ...swalBase,
+            icon: "warning",
+            title: "Missing Fields",
+            text: "Please fill in all required details."
+          });
+          return;
+        }
 
-    // ✅ Prepare WhatsApp message
-    const clinicNumber = "918089485892";
-    const fullPhone = `+91${phone}`;
-    const text = `🦷 *New Appointment Request*%0A
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(phone)) {
+          Swal.fire({
+            ...swalBase,
+            icon: "error",
+            title: "Invalid Number",
+            text: "Enter a valid 10-digit WhatsApp number."
+          });
+          return;
+        }
+
+        const selectedDate = new Date(date);
+        const todayCheck = new Date();
+        todayCheck.setHours(0, 0, 0, 0);
+        if (selectedDate < todayCheck) {
+          Swal.fire({
+            ...swalBase,
+            icon: "error",
+            title: "Invalid Date",
+            text: "You can only book appointments for today or a future date."
+          });
+          return;
+        }
+
+        const day = selectedDate.getDay();
+        const [hour, minute] = time.split(":").map(Number);
+        const totalMinutes = hour * 60 + minute;
+
+        if (day === 0) {
+          if (totalMinutes < 630 || totalMinutes > 990) {
+            Swal.fire({
+              ...swalBase,
+              icon: "error",
+              title: "Outside Sunday Hours",
+              text: "Sunday appointments are available 10:30 AM – 4:30 PM."
+            });
+            return;
+          }
+        } else {
+          if (totalMinutes < 570 || totalMinutes > 1170) {
+            Swal.fire({
+              ...swalBase,
+              icon: "error",
+              title: "Outside Clinic Hours",
+              text: "Appointments are available 9:30 AM – 7:30 PM."
+            });
+            return;
+          }
+        }
+
+        const clinicNumber = "918089485892";
+        const fullPhone = `+91${phone}`;
+        const text = `*New Appointment Request* 🩺%0A
 *Name:* ${name}%0A
 *WhatsApp:* ${fullPhone}%0A
 *Date:* ${date}%0A
 *Time:* ${time}%0A
 *Concern:* ${message || "N/A"}%0A`;
 
-    Swal.fire({
-      ...swalBase,
-      icon: "success",
-      title: "Appointment Ready!",
-      text: "Redirecting to WhatsApp to confirm your booking.",
-      showConfirmButton: false,
-      timer: 1800
-    });
+        Swal.fire({
+          ...swalBase,
+          icon: "success",
+          title: "Appointment Ready!",
+          text: "Redirecting to WhatsApp to confirm your booking.",
+          showConfirmButton: false,
+          timer: 1800
+        });
 
-    setTimeout(() => {
-      window.open(`https://wa.me/${clinicNumber}?text=${text}`, "_blank");
-      form.reset();
-    }, 1800);
-  });
-});
-</script>
+        setTimeout(() => {
+          window.open(`https://wa.me/${clinicNumber}?text=${text}`, "_blank");
+          form.reset();
+        }, 1800);
+      });
+    });
+  </script>
 
 </body>
 </html>
