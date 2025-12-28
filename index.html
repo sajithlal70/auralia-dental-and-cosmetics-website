@@ -101,6 +101,17 @@
         font-size: 1.5rem;
       }
     }
+    @keyframes ping {
+    75%, 100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+  
+  .animate-ping {
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
   </style>
 </head>
 <body class="scroll-smooth">
@@ -609,17 +620,33 @@
                 maxlength="10" />
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input type="date" id="date"
-                class="border border-gray-300 rounded-xl p-3
-                      focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
-                      text-sm md:text-base" />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-              <input type="time" id="time"
-                class="border border-gray-300 rounded-xl p-3
-                      focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
-                      text-sm md:text-base" />
+              <!-- Date Field -->
+              <div class="relative">
+                <input type="date" id="date" placeholder="Select Date"
+                  class="w-full border border-gray-300 rounded-xl pl-10 pr-3 py-3
+                        focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
+                        text-sm md:text-base bg-[#fff9e6] appearance-none" />
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+                  📅
+                </span>
+              </div>
+
+              <!-- Time Field -->
+              <div class="relative">
+                <input type="time" id="time" placeholder="Select Time"
+                  class="w-full border border-gray-300 rounded-xl pl-10 pr-3 py-3
+                        focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
+                        text-sm md:text-base bg-[#fff9e6] appearance-none" />
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+                  ⏰
+                </span>
+              </div>
+
             </div>
+
+
 
             <textarea id="message" rows="3"
               placeholder="Any specific concern?"
