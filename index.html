@@ -612,11 +612,11 @@
 
 
 
-            <textarea id="message" rows="3"
-              placeholder="Any specific concern?"
-              class="border border-gray-300 rounded-xl p-3
-                    focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
-                    text-sm md:text-base"></textarea>
+            <textarea id="description"
+              placeholder="Describe your concern"
+              class="border border-gray-300 rounded-xl p-3 w-full
+                    focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40"></textarea>
+
 
             <!-- CTA -->
             <button type="submit"
@@ -877,67 +877,79 @@
     .forEach(initSparkles);
 
     // Appointment Form
+
     document.addEventListener("DOMContentLoaded", () => {
 
-  const form = document.getElementById("appointmentForm");
-  if (!form) return;
+    const form = document.getElementById("appointmentForm");
+    if (!form) return;
 
-  const nameEl = document.getElementById("name");
-  const phoneEl = document.getElementById("phone");
-  const dateEl = document.getElementById("date");
-  const timeEl = document.getElementById("time");
+    const nameEl = document.getElementById("name");
+    const phoneEl = document.getElementById("phone");
+    const dateEl = document.getElementById("date");
+    const timeEl = document.getElementById("time");
+    const descEl = document.getElementById("description");
 
-  const today = new Date();
-  const localDate = new Date(today.getTime() - today.getTimezoneOffset()*60000)
+    const CLINIC_WHATSAPP = "918089485892"; 
+
+    // Disable past dates
+    const today = new Date();
+    const localDate = new Date(today.getTime() - today.getTimezoneOffset()*60000)
                       .toISOString().split("T")[0];
-  dateEl.min = localDate;
+    dateEl.min = localDate;
 
-  dateEl.addEventListener("change", () => {
-    const day = new Date(dateEl.value).getDay();
-    if (day === 0) {
-      timeEl.min = "10:30";
-      timeEl.max = "16:30";
-    } else {
-      timeEl.min = "09:30";
-      timeEl.max = "19:30";
-    }
-    timeEl.value = "";
-  });
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    if (!nameEl.value || !phoneEl.value || !dateEl.value || !timeEl.value) {
-      Swal.fire("Missing details", "Please fill all required fields", "warning");
-      return;
-    }
-
-    if (phoneEl.value.length !== 10) {
-      Swal.fire("Invalid number", "Enter a valid 10-digit WhatsApp number", "error");
-      return;
-    }
-
-    const msg = `Hello Auralia Dental,
-I would like to book an appointment.
-
-Name: ${nameEl.value}
-Phone: +91${phoneEl.value}
-Date: ${dateEl.value}
-Time: ${timeEl.value}`;
-
-    const url = `https://wa.me/91${phoneEl.value}?text=${encodeURIComponent(msg)}`;
-
-    Swal.fire({
-      title: "Redirecting to WhatsApp",
-      text: "Please confirm your appointment",
-      icon: "success",
-      timer: 2000,
-      showConfirmButton: false
+    dateEl.addEventListener("change", () => {
+      const day = new Date(dateEl.value).getDay();
+      if (day === 0) {
+        timeEl.min = "10:30";
+        timeEl.max = "16:30";
+      } else {
+        timeEl.min = "09:30";
+        timeEl.max = "19:30";
+      }
+      timeEl.value = "";
     });
 
-    setTimeout(() => window.open(url, "_blank"), 2000);
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+
+      if (!nameEl.value || !phoneEl.value || !dateEl.value || !timeEl.value) {
+        Swal.fire("Missing details", "Please fill all required fields", "warning");
+        return;
+      }
+
+      if (phoneEl.value.length !== 10) {
+        Swal.fire("Invalid number", "Enter a valid 10-digit WhatsApp number", "error");
+        return;
+      }
+
+      const message = `
+  Hello Auralia Dental,
+
+  I would like to book an appointment.
+
+  👤 Name: ${nameEl.value}
+  📞 Phone: +91${phoneEl.value}
+  📅 Date: ${dateEl.value}
+  ⏰ Time: ${timeEl.value}
+  📝 Concern: ${descEl.value || "Not specified"}
+  `;
+
+      const whatsappURL =
+        `https://wa.me/${CLINIC_WHATSAPP}?text=${encodeURIComponent(message)}`;
+
+      Swal.fire({
+        title: "Opening WhatsApp",
+        text: "Please confirm your appointment",
+        icon: "success",
+        timer: 1800,
+        showConfirmButton: false
+      });
+
+      setTimeout(() => {
+        window.open(whatsappURL, "_blank");
+      }, 1800);
+    });
   });
-});
   </script>
 
 </body>
