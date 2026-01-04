@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Auralia Dental & Cosmetic Excellence</title>
+
   <link rel="icon" type="image/webp" href="./Assets/Auralia_vertical_Logo-.webp">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -16,17 +18,13 @@
       color: #222;
       overflow-x: hidden;
     }
-    .font-serif {
-      font-family: 'Playfair Display', serif;
-    }
-    .text-accent {
-      color: #5f1a1f;
-    }
+    .font-serif { font-family: 'Playfair Display', serif; }
+    .text-accent { color: #5f1a1f; }
+
     .nav-link a {
       position: relative;
       padding-bottom: 4px;
     }
-
     .nav-link a::after {
       content: "";
       position: absolute;
@@ -37,10 +35,8 @@
       background: linear-gradient(to right, #f5d98b, #d4af37);
       transition: width 0.3s ease;
     }
+    .nav-link a:hover::after { width: 100%; }
 
-    .nav-link a:hover::after {
-      width: 100%;
-    }
     .sparkle-bg {
       position: absolute;
       inset: 0;
@@ -49,20 +45,14 @@
       z-index: 0;
       pointer-events: none;
     }
-    
-    /* Mobile Menu */
+
     .mobile-menu {
       transform: translateX(100%);
       transition: transform 0.3s ease-in-out;
     }
-    .mobile-menu.active {
-      transform: translateX(0);
-    }
-    
-    /* Video Styles */
-    .video-thumb {
-      position: relative;
-    }
+    .mobile-menu.active { transform: translateX(0); }
+
+    .video-thumb { position: relative; }
     .play-overlay {
       position: absolute;
       inset: 0;
@@ -76,108 +66,82 @@
       transition: opacity 0.3s ease;
       border-radius: 0.5rem;
     }
-    .video-thumb:hover .play-overlay {
-      opacity: 1;
-    }
-    
-    /* Animations */
+    .video-thumb:hover .play-overlay { opacity: 1; }
+
     .fade-in {
       animation: fadeIn 0.5s ease forwards;
     }
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .play-overlay {
-        font-size: 1.5rem;
-      }
-    }
-    @keyframes ping {
-    75%, 100% {
-      transform: scale(1.5);
-      opacity: 0;
-    }
-  }
-  
-  .animate-ping {
-    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
 
+    @keyframes ping {
+      75%, 100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+    .animate-ping {
+      animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;
+    }
   </style>
 </head>
+
 <body class="scroll-smooth">
 
   <!-- Navbar -->
+
   <nav id="navbar"
-  class="fixed top-0 w-full z-50 transition-all duration-500
-         bg-[#eee7e2]/70 backdrop-blur-xl
-         border-b border-[#d4af37]/30">
+    class="fixed top-0 w-full z-50 transition-all duration-500
+          bg-[#eee7e2]/70 backdrop-blur-xl
+          border-b border-[#d4af37]/30">
 
-  <div class="max-w-7xl mx-auto flex items-center justify-between
-              px-4 md:px-8 py-4">
-
-    <!-- Logo -->
-    <div class="flex items-center gap-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-4">
       <img src="./Assets/Landscape_logo.webp"
-           class="h-10 md:h-12 object-contain drop-shadow-md"
-           alt="Auralia Logo">
+          class="h-10 md:h-12 object-contain drop-shadow-md"
+          alt="Auralia Logo">
+
+      <ul class="hidden lg:flex items-center gap-8 text-sm font-semibold tracking-wide text-[#5f1a1f]">
+        <li class="nav-link"><a href="#about">About</a></li>
+        <li class="nav-link"><a href="#services">Services</a></li>
+        <li class="nav-link"><a href="#gallery">Gallery</a></li>
+        <li class="nav-link"><a href="#doctors">Doctors</a></li>
+        <li class="nav-link"><a href="#reviews">Reviews</a></li>
+        <li>
+          <a href="#appointment"
+            class="ml-4 px-6 py-2 rounded-full bg-gradient-to-r from-[#f5d98b] to-[#d4af37]
+                  text-[#111] font-semibold shadow hover:scale-105 transition">
+            Book Appointment
+          </a>
+        </li>
+      </ul>
+
+      <button id="mobile-menu-btn"
+        aria-label="Open menu"
+        class="lg:hidden text-2xl text-[#5f1a1f]">
+        <i class="fas fa-bars"></i>
+      </button>
     </div>
-
-    <!-- Desktop Menu -->
-    <ul class="hidden lg:flex items-center gap-8
-               text-sm font-semibold tracking-wide text-[#5f1a1f]">
-
-      <li class="nav-link"><a href="#about">About</a></li>
-      <li class="nav-link"><a href="#services">Services</a></li>
-      <li class="nav-link"><a href="#gallery">Gallery</a></li>
-      <li class="nav-link"><a href="#doctors">Doctors</a></li>
-      <li class="nav-link"><a href="#reviews">Reviews</a></li>
-
-      <!-- CTA -->
-      <li>
-        <a href="#appointment"
-           class="ml-4 px-6 py-2 rounded-full
-                  bg-gradient-to-r from-[#f5d98b] to-[#d4af37]
-                  text-[#111] font-semibold
-                  shadow-[0_6px_18px_rgba(212,175,55,0.45)]
-                  hover:scale-105 transition">
-          Book Appointment
-        </a>
-      </li>
-    </ul>
-
-    <!-- Mobile Button -->
-    <button id="mobile-menu-btn"
-      class="lg:hidden text-2xl text-[#5f1a1f]">
-      <i class="fas fa-bars"></i>
-    </button>
-  </div>
-</nav>
+  </nav>
 
   
   <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-64 bg-[#5f1a1f] text-white z-50 shadow-2xl lg:hidden">
-    <button id="close-menu" class="absolute top-4 right-4 text-2xl focus:outline-none">
-      <i class="fas fa-times"></i>
-    </button>
-    <ul class="flex flex-col space-y-6 mt-16 px-8 text-lg font-semibold">
-      <li><a href="#about" class="hover:text-[#d4af37] transition-colors menu-link">About</a></li>
-      <li><a href="#services" class="hover:text-[#d4af37] transition-colors menu-link">Services</a></li>
-      <li><a href="#gallery" class="hover:text-[#d4af37] transition-colors menu-link">Gallery</a></li>
-      <li><a href="#doctors" class="hover:text-[#d4af37] transition-colors menu-link">Doctors</a></li>
-      <li><a href="#reviews" class="hover:text-[#d4af37] transition-colors menu-link">Reviews</a></li>
-      <li><a href="#appointment" class="hover:text-[#d4af37] transition-colors menu-link">Appointment</a></li>
-    </ul>
-  </div>
+
+<div id="mobile-menu"
+  class="mobile-menu fixed top-0 right-0 h-full w-64 bg-[#5f1a1f] text-white z-50 shadow-2xl lg:hidden">
+  <button id="close-menu" class="absolute top-4 right-4 text-2xl">
+    <i class="fas fa-times"></i>
+  </button>
+  <ul class="flex flex-col space-y-6 mt-16 px-8 text-lg font-semibold">
+    <li><a href="#about" class="menu-link">About</a></li>
+    <li><a href="#services" class="menu-link">Services</a></li>
+    <li><a href="#gallery" class="menu-link">Gallery</a></li>
+    <li><a href="#doctors" class="menu-link">Doctors</a></li>
+    <li><a href="#reviews" class="menu-link">Reviews</a></li>
+    <li><a href="#appointment" class="menu-link">Appointment</a></li>
+  </ul>
+</div>
     
   <!-- Hero Section -->
   <header class="relative h-[70vh] md:h-screen flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat"
@@ -871,23 +835,25 @@
     });
 
     // Three.js Sparkles
-    function initSparkles(canvasId) {
-      const canvas = document.getElementById(canvasId);
+
+    function initSparkles(id) {
+      if (window.innerWidth < 768) return;
+
+      const canvas = document.getElementById(id);
       if (!canvas) return;
+
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+      const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true });
       renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
       const geometry = new THREE.BufferGeometry();
       const vertices = [];
-      const particleCount = window.innerWidth < 768 ? 600 : 1200;
-      for (let i = 0; i < particleCount; i++) {
-        vertices.push((Math.random() - 0.5) * 40);
-        vertices.push((Math.random() - 0.5) * 25);
-        vertices.push((Math.random() - 0.5) * 25);
+      for (let i = 0; i < 1200; i++) {
+        vertices.push((Math.random()-0.5)*40,(Math.random()-0.5)*25,(Math.random()-0.5)*25);
       }
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+      geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices,3));
+
       const material = new THREE.PointsMaterial({
         color: 0xf5d77a,
         size: 0.1,
@@ -895,154 +861,83 @@
         opacity: 0.8,
         blending: THREE.AdditiveBlending
       });
+
       const points = new THREE.Points(geometry, material);
       scene.add(points);
       camera.position.z = 7;
 
-      function animate() {
+      (function animate(){
         requestAnimationFrame(animate);
         points.rotation.y += 0.0008;
-        points.rotation.x += 0.0005;
-        material.opacity = 0.7 + Math.sin(Date.now() * 0.0015) * 0.3;
-        renderer.render(scene, camera);
-      }
-      animate();
-
-      window.addEventListener('resize', () => {
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-      });
+        renderer.render(scene,camera);
+      })();
     }
 
-    ['sparkles-about', 'sparkles-services', 'sparkles-gallery', 'sparkles-doctors'].forEach(initSparkles);
+    ["sparkles-about","sparkles-services","sparkles-gallery","sparkles-doctors"]
+    .forEach(initSparkles);
 
     // Appointment Form
-    document.addEventListener("DOMContentLoaded", function() {
-      const form = document.getElementById("appointmentForm");
-      const dateInput = document.getElementById("date");
-      const timeInput = document.getElementById("time");
+    document.addEventListener("DOMContentLoaded", () => {
 
-      const today = new Date();
-      const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().split("T")[0];
-      dateInput.setAttribute("min", localDate);
+  const form = document.getElementById("appointmentForm");
+  if (!form) return;
 
-      dateInput.addEventListener("change", function() {
-        const selectedDate = new Date(this.value);
-        const day = selectedDate.getDay();
-        if (day === 0) {
-          timeInput.setAttribute("min", "10:30");
-          timeInput.setAttribute("max", "16:30");
-        } else {
-          timeInput.setAttribute("min", "09:30");
-          timeInput.setAttribute("max", "19:30");
-        }
-        timeInput.value = "";
-      });
+  const nameEl = document.getElementById("name");
+  const phoneEl = document.getElementById("phone");
+  const dateEl = document.getElementById("date");
+  const timeEl = document.getElementById("time");
 
-      const swalBase = {
-        customClass: {
-          popup: "rounded-2xl shadow-lg text-[#5f1a1f] bg-[#f8f7f3]",
-          title: "text-base md:text-lg font-medium font-serif",
-          htmlContainer: "text-xs md:text-sm font-sans text-gray-700",
-          confirmButton: "text-xs md:text-sm px-3 md:px-4 py-2 rounded-full bg-[#d4af37] text-white hover:bg-[#b8962f] focus:outline-none"
-        },
-        buttonsStyling: false
-      };
+  const today = new Date();
+  const localDate = new Date(today.getTime() - today.getTimezoneOffset()*60000)
+                      .toISOString().split("T")[0];
+  dateEl.min = localDate;
 
-      form.addEventListener("submit", function(e) {
-        e.preventDefault();
+  dateEl.addEventListener("change", () => {
+    const day = new Date(dateEl.value).getDay();
+    if (day === 0) {
+      timeEl.min = "10:30";
+      timeEl.max = "16:30";
+    } else {
+      timeEl.min = "09:30";
+      timeEl.max = "19:30";
+    }
+    timeEl.value = "";
+  });
 
-        const name = document.getElementById("name").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        const date = document.getElementById("date").value;
-        const time = document.getElementById("time").value;
-        const message = document.getElementById("message").value.trim();
+  form.addEventListener("submit", e => {
+    e.preventDefault();
 
-        if (!name || !phone || !date || !time) {
-          Swal.fire({
-            ...swalBase,
-            icon: "warning",
-            title: "Missing Fields",
-            text: "Please fill in all required details."
-          });
-          return;
-        }
+    if (!nameEl.value || !phoneEl.value || !dateEl.value || !timeEl.value) {
+      Swal.fire("Missing details", "Please fill all required fields", "warning");
+      return;
+    }
 
-        const phonePattern = /^[0-9]{10}$/;
-        if (!phonePattern.test(phone)) {
-          Swal.fire({
-            ...swalBase,
-            icon: "error",
-            title: "Invalid Number",
-            text: "Enter a valid 10-digit WhatsApp number."
-          });
-          return;
-        }
+    if (phoneEl.value.length !== 10) {
+      Swal.fire("Invalid number", "Enter a valid 10-digit WhatsApp number", "error");
+      return;
+    }
 
-        const selectedDate = new Date(date);
-        const todayCheck = new Date();
-        todayCheck.setHours(0, 0, 0, 0);
-        if (selectedDate < todayCheck) {
-          Swal.fire({
-            ...swalBase,
-            icon: "error",
-            title: "Invalid Date",
-            text: "You can only book appointments for today or a future date."
-          });
-          return;
-        }
+    const msg = `Hello Auralia Dental,
+I would like to book an appointment.
 
-        const day = selectedDate.getDay();
-        const [hour, minute] = time.split(":").map(Number);
-        const totalMinutes = hour * 60 + minute;
+Name: ${nameEl.value}
+Phone: +91${phoneEl.value}
+Date: ${dateEl.value}
+Time: ${timeEl.value}`;
 
-        if (day === 0) {
-          if (totalMinutes < 630 || totalMinutes > 990) {
-            Swal.fire({
-              ...swalBase,
-              icon: "error",
-              title: "Outside Sunday Hours",
-              text: "Sunday appointments are available 10:30 AM – 4:30 PM."
-            });
-            return;
-          }
-        } else {
-          if (totalMinutes < 570 || totalMinutes > 1170) {
-            Swal.fire({
-              ...swalBase,
-              icon: "error",
-              title: "Outside Clinic Hours",
-              text: "Appointments are available 9:30 AM – 7:30 PM."
-            });
-            return;
-          }
-        }
+    const url = `https://wa.me/91${phoneEl.value}?text=${encodeURIComponent(msg)}`;
 
-        const clinicNumber = atob("OTE4MDg5NDg1ODky");
-        const fullPhone = `+91${phone}`;
-        const text = `*New Appointment Request* 🩺%0A
-*Name:* ${name}%0A
-*WhatsApp:* ${fullPhone}%0A
-*Date:* ${date}%0A
-*Time:* ${time}%0A
-*Concern:* ${message || "N/A"}%0A`;
-
-        Swal.fire({
-          ...swalBase,
-          icon: "success",
-          title: "Appointment Ready!",
-          text: "Redirecting to WhatsApp to confirm your booking.",
-          showConfirmButton: false,
-          timer: 1800
-        });
-
-        setTimeout(() => {
-          window.open(`https://wa.me/${clinicNumber}?text=${text}`, "_blank");
-          form.reset();
-        }, 1800);
-      });
+    Swal.fire({
+      title: "Redirecting to WhatsApp",
+      text: "Please confirm your appointment",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false
     });
+
+    setTimeout(() => window.open(url, "_blank"), 2000);
+  });
+});
   </script>
 
 </body>
