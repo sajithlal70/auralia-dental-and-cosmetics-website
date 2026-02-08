@@ -10,88 +10,11 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #eee7e2;
-      color: #222;
-      overflow-x: hidden;
-    }
-    .font-serif { font-family: 'Playfair Display', serif; }
-    .text-accent { color: #5f1a1f; }
-
-    .nav-link a {
-      position: relative;
-      padding-bottom: 4px;
-    }
-    .nav-link a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0%;
-      height: 2px;
-      background: linear-gradient(to right, #f5d98b, #d4af37);
-      transition: width 0.3s ease;
-    }
-    .nav-link a:hover::after { width: 100%; }
-
-    .sparkle-bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .mobile-menu {
-      transform: translateX(100%);
-      transition: transform 0.3s ease-in-out;
-    }
-    .mobile-menu.active { transform: translateX(0); }
-
-    .video-thumb { position: relative; }
-    .play-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      color: white;
-      background: rgba(0,0,0,0.25);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      border-radius: 0.5rem;
-    }
-    .video-thumb:hover .play-overlay { opacity: 1; }
-
-    .fade-in {
-      animation: fadeIn 0.5s ease forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes ping {
-      75%, 100% {
-        transform: scale(1.5);
-        opacity: 0;
-      }
-    }
-    .animate-ping {
-      animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;
-    }
-  </style>
+  <link rel="stylesheet" href="./Assets/css/style.css">
 </head>
 
 <body class="scroll-smooth">
-
   <!-- Navbar -->
-
   <nav id="navbar"
     class="fixed top-0 w-full z-50 transition-all duration-500
           bg-[#eee7e2]/70 backdrop-blur-xl
@@ -145,7 +68,7 @@
     
   <!-- Hero Section -->
   <header class="relative h-[70vh] md:h-screen flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat"
-    style="background-image: url('./Assets/clinic_banner.webp');">
+    style="background-image: url('./Assets/images/clinic_banner.webp');">
     <div class="absolute inset-0 bg-gradient-to-b from-[#00000099] via-[#00000066] to-[#00000033]"></div>
     <div class="relative z-10 px-4 md:px-6">
       <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#f5d77a] mb-3 md:mb-4 drop-shadow-xl tracking-wide">
@@ -195,8 +118,8 @@
       <video
         id="aboutVideo"
         class="hidden md:block w-full aspect-[16/9] min-h-[28rem] md:min-h-[36rem] object-cover"
-        src="./Assets/Auralia_Video_New.mp4"
-        poster="./Assets/Auralia_Video_Poster.webp"
+        src="./Assets/images/Auralia_Video_New.mp4"
+        poster="./Assets/images/Auralia_Video_Poster.webp"
         autoplay
         muted
         loop
@@ -206,7 +129,7 @@
 
       <!-- Poster (mobile only) -->
       <img
-        src="./Assets/Clinic_reception_image.webp"
+        src="./Assets/images/Clinic_reception_image.webp"
         alt="Auralia Clinic Interior"
         class="block md:hidden w-full aspect-[16/9] object-cover" />
 
@@ -313,7 +236,8 @@
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
           <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>HydraFacial</li>
+            <li>Hydra Facial</li>
+            <li>Oxygeneo Facial</li>
             <li>Vitamin Facial</li>
             <li>BB Glow Mesotherapy</li>
             <li>Chemical Peels</li>
@@ -371,22 +295,21 @@
     <div class="relative z-10 mb-12 md:mb-20">
       <h3 class="text-xl md:text-2xl font-serif text-accent text-center mb-4 md:mb-6">The Auralia Experience</h3>
       <div id="interior-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 transition-all duration-500">
-        <img src="./Assets/Front_Door.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Clinic Front">
-        <img src="./Assets/Clinic_reception_image.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Waiting Area">
-        <img src="./Assets/Reception_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Reception">
-        <img src="./Assets/Patients_Wating _Area_2.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Waiting Area">
-        <img src="./Assets/Pharmacy_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Pharmacy">
-        <img src="./Assets/Doctors_Room_1.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Doctors Room">
-        <img src="./Assets/Skin_Room_1_img_2.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room">
-        <img src="./Assets/Skin_Room_2_Img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room">
-        <img src="./Assets/Dental_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
-        <img src="./Assets/Dental_Room_2.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
-
+        <img src="./Assets/images/Front_Door.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Clinic Front">
+        <img src="./Assets/images/Clinic_reception_image.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Waiting Area">
+        <img src="./Assets/images/Reception_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Reception">
+        <img src="./Assets/images/Patients_Wating _Area_2.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Waiting Area">
+        <img src="./Assets/images/Pharmacy_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Pharmacy">
+        <img src="./Assets/images/Doctors_Room_1.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Doctors Room">
+        <img src="./Assets/images/Skin_Room_1_img_2.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room">
+        <img src="./Assets/images/Skin_Room_2_Img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room">
+        <img src="./Assets/images/Dental_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
+        <img src="./Assets/images/Dental_Room_2.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
         <!-- Hidden Images -->
-        <img src="./Assets/Patients_waiting_area.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Waiting Area">
-        <img src="./Assets/Sterilization_room.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Sterilization">
-        <img src="./Assets/Dental_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Dental Room">
-        <img src="./Assets/Skin_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Skin Room">
+        <img src="./Assets/images/Patients_waiting_area.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Waiting Area">
+        <img src="./Assets/images/Sterilization_room.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Sterilization">
+        <img src="./Assets/images/Dental_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Dental Room">
+        <img src="./Assets/images/Skin_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Skin Room">
       </div>
       <div class="text-center mt-4 md:mt-6">
         <button id="showMoreInterior" class="px-5 md:px-6 py-2 bg-[#d4af37] text-white rounded-full text-xs md:text-sm hover:bg-[#c19c2b] transition">Show More</button>
@@ -399,22 +322,22 @@
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQq2ly1k8md/">
-          <img src="./Assets/reel_thumb_1.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <img src="./Assets/images/reel_thumb_1.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
           <div class="play-overlay">▶</div>
         </div>
 
         <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRCPdNqkwGV/">
-          <img src="./Assets/reel_thumb_2.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <img src="./Assets/images/reel_thumb_2.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
           <div class="play-overlay">▶</div>
         </div>
 
         <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRT1AKpCtmi/">
-          <img src="./Assets/insta_thumb_3 .webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <img src="./Assets/images/insta_thumb_3 .webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
           <div class="play-overlay">▶</div>
         </div>
 
         <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQqb1noEzYi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
-          <img src="./Assets/reel_thumb_4.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
+          <img src="./Assets/images/reel_thumb_4.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
           <div class="play-overlay">▶</div>
         </div>
       </div>
@@ -444,11 +367,11 @@
         <p class="text-xs md:text-sm text-[#555]">Chief Dental Surgeon & Aesthetic Consultant</p>
       </div>
 
-      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+      <!-- <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
         <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Naheema</h3>
         <h4 class="font-serif text-sm md:text-base text-accent">BDS, FMAC</h4>
         <p class="text-xs md:text-sm text-[#555]">Resident Dentist & Cosmetologist</p>
-      </div>
+      </div> -->
 
       <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
         <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Nebin Noushad</h3>
@@ -474,7 +397,7 @@
         <p class="text-xs md:text-sm text-[#555]">Prosthodontist</p>
       </div>
 
-      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
+      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
         <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Vishnu S</h3>
         <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
         <p class="text-xs md:text-sm text-[#555]">Endodontist</p>
@@ -687,8 +610,8 @@
         </p>
         <p class="text-xs md:text-sm leading-relaxed">
           <i class="fa-solid fa-clock text-[#d4af37] mr-2"></i>
-          Mon – Sat: 9:00 AM – 7:00 PM<br>
-          Sun: 10:30 AM – 4:30 PM
+          Mon – Sat: 9:00 AM – 8:30 PM<br>
+          Sun: 10:30 AM – 3:30 PM
         </p>
       </div>
 
@@ -752,215 +675,6 @@
   <script async src="https://www.instagram.com/embed.js"></script>
   <script src="https://elfsightcdn.com/platform.js" async></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-      const navbar = document.getElementById("navbar");
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 60) {
-          navbar.classList.add(
-            "shadow-xl",
-            "bg-[#eee7e2]/90"
-          );
-        } else {
-          navbar.classList.remove(
-            "shadow-xl",
-            "bg-[#eee7e2]/90"
-          );
-        }
-      });
-  </script>
-
-  <script>
-    // Mobile Menu
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const closeMenu = document.getElementById('close-menu');
-    const menuLinks = document.querySelectorAll('.menu-link');
-
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.add('active');
-    });
-
-    closeMenu.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-    });
-
-    menuLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-      });
-    });
-
-    // Video Modal
-    const videoModal = document.getElementById("videoModal");
-    const videoContainer = document.getElementById("videoContainer");
-    const closeVideo = document.getElementById("closeVideo");
-
-    document.querySelectorAll(".video-thumb").forEach(item => {
-      item.addEventListener("click", () => {
-        const reelUrl = item.dataset.reel;
-        videoContainer.innerHTML = `
-          <blockquote class="instagram-media"
-            data-instgrm-permalink="${reelUrl}"
-            data-instgrm-version="14">
-            <a href="${reelUrl}" target="_blank"></a>
-          </blockquote>
-        `;
-        videoModal.classList.remove("hidden");
-        videoModal.classList.add("flex");
-        setTimeout(() => {
-          if (window.instgrm) instgrm.Embeds.process();
-        }, 200);
-      });
-    });
-
-    closeVideo.addEventListener("click", () => {
-      videoModal.classList.add("hidden");
-      videoModal.classList.remove("flex");
-      videoContainer.innerHTML = "";
-    });
-
-    // Gallery Toggle
-    const showMoreBtn = document.getElementById('showMoreInterior');
-    const interiorGallery = document.getElementById('interior-gallery');
-    const hiddenImages = interiorGallery.querySelectorAll('.hidden');
-
-    showMoreBtn.addEventListener('click', () => {
-      const isExpanded = showMoreBtn.textContent === 'Show Less';
-      hiddenImages.forEach(img => img.classList.toggle('hidden', isExpanded));
-      showMoreBtn.textContent = isExpanded ? 'Show More' : 'Show Less';
-    });
-
-    // Doctors Toggle
-    const doctorBtn = document.getElementById("show-more-btn");
-    const hiddenCards = document.querySelectorAll("#doctor-grid .doctor-card.hidden");
-    let expanded = false;
-
-    doctorBtn.addEventListener("click", () => {
-      expanded = !expanded;
-      hiddenCards.forEach(card => {
-        card.classList.toggle("hidden", !expanded);
-        card.classList.toggle("fade-in", expanded);
-      });
-      doctorBtn.textContent = expanded ? "Show Less" : "Show More";
-    });
-
-    // Three.js Sparkles
-
-    function initSparkles(id) {
-      if (window.innerWidth < 768) return;
-
-      const canvas = document.getElementById(id);
-      if (!canvas) return;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true });
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-
-      const geometry = new THREE.BufferGeometry();
-      const vertices = [];
-      for (let i = 0; i < 1200; i++) {
-        vertices.push((Math.random()-0.5)*40,(Math.random()-0.5)*25,(Math.random()-0.5)*25);
-      }
-      geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices,3));
-
-      const material = new THREE.PointsMaterial({
-        color: 0xf5d77a,
-        size: 0.1,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
-      });
-
-      const points = new THREE.Points(geometry, material);
-      scene.add(points);
-      camera.position.z = 7;
-
-      (function animate(){
-        requestAnimationFrame(animate);
-        points.rotation.y += 0.0008;
-        renderer.render(scene,camera);
-      })();
-    }
-
-    ["sparkles-about","sparkles-services","sparkles-gallery","sparkles-doctors"]
-    .forEach(initSparkles);
-
-    // Appointment Form
-
-    document.addEventListener("DOMContentLoaded", () => {
-
-    const form = document.getElementById("appointmentForm");
-    if (!form) return;
-
-    const nameEl = document.getElementById("name");
-    const phoneEl = document.getElementById("phone");
-    const dateEl = document.getElementById("date");
-    const timeEl = document.getElementById("time");
-    const descEl = document.getElementById("description");
-
-    const CLINIC_WHATSAPP = "918089485892"; 
-
-    // Disable past dates
-    const today = new Date();
-    const localDate = new Date(today.getTime() - today.getTimezoneOffset()*60000)
-                      .toISOString().split("T")[0];
-    dateEl.min = localDate;
-
-    dateEl.addEventListener("change", () => {
-      const day = new Date(dateEl.value).getDay();
-      if (day === 0) {
-        timeEl.min = "10:30";
-        timeEl.max = "16:30";
-      } else {
-        timeEl.min = "09:30";
-        timeEl.max = "19:30";
-      }
-      timeEl.value = "";
-    });
-
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-
-      if (!nameEl.value || !phoneEl.value || !dateEl.value || !timeEl.value) {
-        Swal.fire("Missing details", "Please fill all required fields", "warning");
-        return;
-      }
-
-      if (phoneEl.value.length !== 10) {
-        Swal.fire("Invalid number", "Enter a valid 10-digit WhatsApp number", "error");
-        return;
-      }
-
-      const message = `
-  Hello Auralia Dental,
-
-  I would like to book an appointment.
-
-  Name: ${nameEl.value}
-  Phone: +91${phoneEl.value}
-  Date: ${dateEl.value}
-  Time: ${timeEl.value}
-  Concern: ${descEl.value || "Not specified"}
-  `;
-
-      const whatsappURL =
-        `https://wa.me/${CLINIC_WHATSAPP}?text=${encodeURIComponent(message)}`;
-
-      Swal.fire({
-        title: "Opening WhatsApp",
-        text: "Please confirm your appointment",
-        icon: "success",
-        timer: 1800,
-        showConfirmButton: false
-      });
-
-      setTimeout(() => {
-        window.open(whatsappURL, "_blank");
-      }, 1800);
-    });
-  });
-  </script>
-
+  <script src="Assets/js/main.js"></script>
 </body>
 </html>
