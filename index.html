@@ -7,74 +7,111 @@
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link rel="stylesheet" href="./Assets/css/style.css">
+
+  <!-- Dark mode init: run before paint to avoid flash -->
+  <script>
+    (function () {
+      const saved = localStorage.getItem('auraliaTheme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
 </head>
 
-<body class="scroll-smooth">
+<body class="scroll-smooth transition-colors duration-300">
+
   <!-- Navbar -->
   <nav id="navbar"
     class="fixed top-0 w-full z-50 transition-all duration-500
-          bg-[#eee7e2]/70 backdrop-blur-xl
-          border-b border-[#d4af37]/30">
+          bg-[#eee7e2]/70 dark:bg-[#1a1008]/80 backdrop-blur-xl
+          border-b border-[#d4af37]/30 dark:border-[#d4af37]/20">
 
     <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-4">
       <img src="./Assets/images/Landscape_logo.webp"
           class="h-10 md:h-12 object-contain drop-shadow-md"
           alt="Auralia Logo">
 
-      <ul class="hidden lg:flex items-center gap-8 text-sm font-semibold tracking-wide text-[#5f1a1f]">
+      <ul class="hidden lg:flex items-center gap-8 text-sm font-semibold tracking-wide text-[#5f1a1f] dark:text-[#f5d98b]">
         <li class="nav-link"><a href="#about">About</a></li>
         <li class="nav-link"><a href="#services">Services</a></li>
         <li class="nav-link"><a href="#gallery">Gallery</a></li>
         <li class="nav-link"><a href="#doctors">Doctors</a></li>
         <li class="nav-link"><a href="#reviews">Reviews</a></li>
         <li>
-          <a href="#appointment"
-            class="ml-4 px-6 py-2 rounded-full bg-gradient-to-r from-[#f5d98b] to-[#d4af37]
-                  text-[#111] font-semibold shadow hover:scale-105 transition">
+          <a href="#appointment" class="nav-cta-btn">
+            <i class="fas fa-calendar-check nav-cta-icon"></i>
             Book Appointment
           </a>
         </li>
+        <!-- Dark Mode Toggle -->
+        <li>
+          <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle-btn">
+            <span class="theme-toggle-track">
+              <span class="theme-toggle-thumb">
+                <i class="fas fa-sun theme-icon-sun"></i>
+                <i class="fas fa-moon theme-icon-moon"></i>
+              </span>
+            </span>
+          </button>
+        </li>
       </ul>
 
-      <button id="mobile-menu-btn"
-        aria-label="Open menu"
-        class="lg:hidden text-2xl text-[#5f1a1f]">
-        <i class="fas fa-bars"></i>
-      </button>
+      <div class="flex items-center gap-3 lg:hidden">
+        <!-- Mobile dark mode toggle -->
+        <button id="theme-toggle-mobile" aria-label="Toggle dark mode" class="theme-toggle-btn">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb">
+              <i class="fas fa-sun theme-icon-sun"></i>
+              <i class="fas fa-moon theme-icon-moon"></i>
+            </span>
+          </span>
+        </button>
+        <button id="mobile-menu-btn" aria-label="Open menu" class="text-2xl text-[#5f1a1f] dark:text-[#f5d98b]">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
   </nav>
 
-  
   <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu"
+    class="mobile-menu fixed top-0 right-0 h-full w-64 bg-[#5f1a1f] dark:bg-[#1a0d04] text-white z-50 shadow-2xl lg:hidden">
+    <button id="close-menu" class="absolute top-4 right-4 text-2xl">
+      <i class="fas fa-times"></i>
+    </button>
+    <ul class="flex flex-col space-y-6 mt-16 px-8 text-lg font-semibold">
+      <li><a href="#about" class="menu-link">About</a></li>
+      <li><a href="#services" class="menu-link">Services</a></li>
+      <li><a href="#gallery" class="menu-link">Gallery</a></li>
+      <li><a href="#doctors" class="menu-link">Doctors</a></li>
+      <li><a href="#reviews" class="menu-link">Reviews</a></li>
+      <li><a href="#appointment" class="menu-link">Appointment</a></li>
+    </ul>
+  </div>
 
-<div id="mobile-menu"
-  class="mobile-menu fixed top-0 right-0 h-full w-64 bg-[#5f1a1f] text-white z-50 shadow-2xl lg:hidden">
-  <button id="close-menu" class="absolute top-4 right-4 text-2xl">
-    <i class="fas fa-times"></i>
-  </button>
-  <ul class="flex flex-col space-y-6 mt-16 px-8 text-lg font-semibold">
-    <li><a href="#about" class="menu-link">About</a></li>
-    <li><a href="#services" class="menu-link">Services</a></li>
-    <li><a href="#gallery" class="menu-link">Gallery</a></li>
-    <li><a href="#doctors" class="menu-link">Doctors</a></li>
-    <li><a href="#reviews" class="menu-link">Reviews</a></li>
-    <li><a href="#appointment" class="menu-link">Appointment</a></li>
-  </ul>
-</div>
-    
   <!-- Hero Section -->
   <header class="relative h-[70vh] md:h-screen flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat"
     style="background-image: url('./Assets/images/clinic_banner.webp');">
-    <div class="absolute inset-0 bg-gradient-to-b from-[#00000099] via-[#00000066] to-[#00000033]"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#00000099] via-[#00000066] to-[#00000033] dark:from-[#000000cc] dark:via-[#00000099] dark:to-[#00000055]"></div>
     <div class="relative z-10 px-4 md:px-6">
       <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#f5d77a] mb-3 md:mb-4 drop-shadow-xl tracking-wide">
         Auralia Dental & Cosmetic Excellence
       </h1>
-      <p class="text-base md:text-lg lg:text-xl text-[#f5d77a] font-medium mb-4 md:mb-6 drop-shadow-md">
+      <p class="text-base md:text-lg lg:text-xl text-[#f5d77a] font-medium mb-4 md:mb-6 drop-shadow-md"
+         style="font-family:'Playfair Display',serif; font-style:italic; letter-spacing:0.16em;">
         Refined Aesthetics, Timeless Smiles
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
@@ -89,199 +126,148 @@
         </a>
       </div>
       <!-- Urgency nudge -->
-      <div class="mt-5 flex flex-col items-center gap-1.5">
-        <p class="text-xs text-[#f5e6b8] tracking-wide flex items-center gap-2">
-          <span class="relative inline-flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+      <div class="mt-6 flex flex-col items-center gap-3">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full"
+             style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(6px);">
+          <span class="relative inline-flex h-2 w-2 flex-shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-80"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
           </span>
-          Slots filling fast - book now!
-        </p>
+          <p class="text-[11px] md:text-xs text-[#f5e6b8] font-semibold tracking-[0.12em] uppercase">
+            Limited slots available - secure yours today
+          </p>
+        </div>
+        <div class="flex items-center gap-1.5 opacity-40">
+          <span class="w-1 h-1 rounded-full bg-[#d4af37]"></span>
+          <span class="w-1 h-1 rounded-full bg-[#d4af37]"></span>
+          <span class="w-1 h-1 rounded-full bg-[#d4af37]"></span>
+        </div>
       </div>
     </div>
   </header>
 
   <!-- About Section -->
-  <section id="about" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 relative">
+  <section id="about" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 relative bg-[#eee7e2] dark:bg-[#120c06]">
     <canvas id="sparkles-about" class="sparkle-bg"></canvas>
-
     <div class="relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-      
-      <!-- Text -->
       <div>
-        <h2 class="text-2xl md:text-3xl font-serif text-accent mb-3 md:mb-4">About Auralia</h2>
-        <p class="leading-relaxed text-[#333] text-sm md:text-base">
+        <h2 class="text-2xl md:text-3xl font-serif text-accent dark:text-[#f5d98b] mb-3 md:mb-4">About Auralia</h2>
+        <p class="leading-relaxed text-[#333] dark:text-[#c9bfa8] text-sm md:text-base">
           At Auralia Dental & Cosmetic Excellence, we combine modern dentistry with timeless aesthetics.
           Our goal is to craft natural smiles that express confidence and sophistication.
           Every detail is designed for comfort, care, and perfection.
         </p>
       </div>
-
-      <!-- Media -->
       <div class="relative w-full md:max-w-[70%] overflow-hidden rounded-2xl shadow-2xl bg-black">
-
-  <!-- Video (desktop only) -->
-      <video
-        id="aboutVideo"
-        class="hidden md:block w-full aspect-[16/9] min-h-[28rem] md:min-h-[36rem] object-cover"
-        src="./Assets/images/Auralia_Video_New.mp4"
-        poster="./Assets/images/Auralia_Video_Poster.webp"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata">
-      </video>
-
-      <!-- Poster (mobile only) -->
-      <img
-        src="./Assets/images/Clinic_reception_image.webp"
-        alt="Auralia Clinic Interior"
-        class="block md:hidden w-full aspect-[16/9] object-cover" />
-
-      <!-- Luxury overlay -->
-      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-    </div>
+        <video id="aboutVideo"
+          class="hidden md:block w-full aspect-[16/9] min-h-[28rem] md:min-h-[36rem] object-cover"
+          src="./Assets/images/Auralia_Video_New.mp4"
+          poster="./Assets/images/Auralia_Video_Poster.webp"
+          autoplay muted loop playsinline preload="metadata">
+        </video>
+        <img src="./Assets/images/Clinic_reception_image.webp" alt="Auralia Clinic Interior"
+          class="block md:hidden w-full aspect-[16/9] object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+      </div>
     </div>
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 bg-[#f1eee8] relative overflow-hidden">
+  <section id="services" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 bg-[#f1eee8] dark:bg-[#0e0904] relative overflow-hidden">
     <canvas id="sparkles-services" class="sparkle-bg"></canvas>
-
     <div class="relative z-10 text-center mb-10 md:mb-16">
-      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Our Services</h2>
-      <p class="text-[#444] text-sm md:text-base">Precision, artistry, and care in every treatment.</p>
+      <h2 class="text-2xl md:text-3xl font-serif text-accent dark:text-[#f5d98b] mb-2">Our Services</h2>
+      <p class="text-[#444] dark:text-[#a89880] text-sm md:text-base">Precision, artistry, and care in every treatment.</p>
     </div>
-
     <div class="relative z-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-      <!-- Dental Services -->
-      <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
-        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent">Dental Services</h3>
-        <p class="text-xs md:text-sm text-[#555] mb-4 md:mb-6 leading-relaxed">
+
+      <div class="dm-card p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
+        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent dark:text-[#f5d98b]">Dental Services</h3>
+        <p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f] mb-4 md:mb-6 leading-relaxed">
           Experience exceptional dental care blending precision and artistry.
         </p>
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
             Cosmetic & Restorative Dentistry
             <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <p class="text-xs md:text-sm text-[#555] mb-2">Enhance your smile with treatments designed for aesthetics and confidence.</p>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>Tooth Whitening</li>
-            <li>Veneers</li>
-            <li>Tooth Restorations (Fillings / Cosmetic Build-ups)</li>
-            <li>Smile Designing</li>
+          <p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f] mb-2">Enhance your smile with treatments designed for aesthetics and confidence.</p>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
+            <li>Tooth Whitening</li><li>Veneers</li><li>Tooth Restorations (Fillings / Cosmetic Build-ups)</li><li>Smile Designing</li>
           </ul>
         </details>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-            Preventive Dentistry
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Preventive Dentistry <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>Tooth Cleaning (Scaling & Polishing)</li>
-            <li>Pediatric Dental Treatments</li>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
+            <li>Tooth Cleaning (Scaling & Polishing)</li><li>Pediatric Dental Treatments</li>
           </ul>
         </details>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-            Prosthodontics
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Prosthodontics <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
             <li>Partial & Complete Dentures</li>
           </ul>
         </details>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-           Implant Dentistry & Oral Surgery
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Implant Dentistry & Oral Surgery <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>Dental Implants</li>
-            <li>Surgical Procedures</li>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
+            <li>Dental Implants</li><li>Surgical Procedures</li>
           </ul>
         </details>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-            Endodontics
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Endodontics <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
             <li>Root Canal Treatments</li>
           </ul>
         </details>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-            Orthodontics & Aligners
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Orthodontics & Aligners <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>Orthodontic Treatments (Braces)</li>
-            <li>Dental Aligners (Clear Aligners)</li>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
+            <li>Orthodontic Treatments (Braces)</li><li>Dental Aligners (Clear Aligners)</li>
           </ul>
         </details>
       </div>
 
-      <!-- Cosmetic Dentistry -->
-      <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
-        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent">Aesthetic & Skin Care Treatments</h3>
-        <p class="text-xs md:text-sm text-[#555] mb-4 md:mb-6 leading-relaxed">
-          Radiate natural confidence through customized cosmetic solutions.
-        </p>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-            Skin Rejuvenation & Glow Treatments
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+      <div class="dm-card p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
+        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent dark:text-[#f5d98b]">Aesthetic & Skin Care Treatments</h3>
+        <p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f] mb-4 md:mb-6 leading-relaxed">Radiate natural confidence through customized cosmetic solutions.</p>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Skin Rejuvenation & Glow Treatments <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>Hydra Facial</li>
-            <li>Oxygeneo Facial</li>
-            <li>Vitamin Facial</li>
-            <li>BB Glow Mesotherapy</li>
-            <li>Chemical Peels</li>
-            <li>Treatment for Hyperpigmentation</li>
-            <li>Skin Rejuvenation</li>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
+            <li>Hydra Facial</li><li>Oxygeneo Facial</li><li>Vitamin Facial</li><li>BB Glow Mesotherapy</li><li>Chemical Peels</li><li>Treatment for Hyperpigmentation</li><li>Skin Rejuvenation</li>
           </ul>
         </details>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-            Advanced Regenerative Therapies
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Advanced Regenerative Therapies <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>Vampire Facial</li>
-            <li>PRP for Skin & Hair</li>
-            <li>GFC for Skin & Hair</li>
-            <li>Acne Scars Treatment</li>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
+            <li>Vampire Facial</li><li>PRP for Skin & Hair</li><li>GFC for Skin & Hair</li><li>Acne Scars Treatment</li>
           </ul>
         </details>
       </div>
 
-      <!-- Facial Aesthetics -->
-      <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
-        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent">Facial Aesthetics</h3>
-        <p class="text-xs md:text-sm text-[#555] mb-4 md:mb-6 leading-relaxed">
-          Subtle enhancements that harmonize facial features for youthful elegance.
-        </p>
-
-        <details class="group border-t border-[#eee] pt-3 md:pt-4">
-          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] mb-2 md:mb-3 flex justify-between items-center">
-            Cosmetic Micropigmentation & Minor Skin Procedures
-            <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
+      <div class="dm-card p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-[#d4af37] hover:shadow-xl transition">
+        <h3 class="font-serif text-xl md:text-2xl mb-3 md:mb-4 text-accent dark:text-[#f5d98b]">Facial Aesthetics</h3>
+        <p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f] mb-4 md:mb-6 leading-relaxed">Subtle enhancements that harmonize facial features for youthful elegance.</p>
+        <details class="group border-t dm-border pt-3 md:pt-4">
+          <summary class="cursor-pointer font-semibold text-sm md:text-base text-[#333] dark:text-[#e8d9be] mb-2 md:mb-3 flex justify-between items-center">
+            Cosmetic Micropigmentation & Minor Skin Procedures <span class="transition-transform group-open:rotate-180 text-[#d4af37]">▼</span>
           </summary>
-          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] space-y-1">
-            <li>Microblading (Eyebrows)</li>
-            <li>Lip Micropigmentation</li>
-            <li>Warts & Skin Tag Removal</li>
+          <ul class="list-disc pl-5 text-xs md:text-sm text-[#555] dark:text-[#9e917f] space-y-1">
+            <li>Microblading (Eyebrows)</li><li>Lip Micropigmentation</li><li>Warts & Skin Tag Removal</li>
           </ul>
         </details>
       </div>
@@ -289,17 +275,14 @@
   </section>
 
   <!-- Gallery Section -->
-  <section id="gallery" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 bg-[#f1eee8] relative overflow-hidden">
+  <section id="gallery" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 bg-[#f1eee8] dark:bg-[#0e0904] relative overflow-hidden">
     <canvas id="sparkles-gallery" class="sparkle-bg"></canvas>
-
     <div class="relative z-10 text-center mb-10 md:mb-16">
-      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Gallery</h2>
-      <p class="text-[#444] text-sm md:text-base">A glimpse into the artistry of our clinic and work.</p>
+      <h2 class="text-2xl md:text-3xl font-serif text-accent dark:text-[#f5d98b] mb-2">Gallery</h2>
+      <p class="text-[#444] dark:text-[#a89880] text-sm md:text-base">A glimpse into the artistry of our clinic and work.</p>
     </div>
-
-    <!-- Clinic Interior Gallery -->
     <div class="relative z-10 mb-12 md:mb-20">
-      <h3 class="text-xl md:text-2xl font-serif text-accent text-center mb-4 md:mb-6">The Auralia Experience</h3>
+      <h3 class="text-xl md:text-2xl font-serif text-accent dark:text-[#f5d98b] text-center mb-4 md:mb-6">The Auralia Experience</h3>
       <div id="interior-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 transition-all duration-500">
         <img src="./Assets/images/Front_Door.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Clinic Front">
         <img src="./Assets/images/Clinic_reception_image.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Waiting Area">
@@ -311,7 +294,6 @@
         <img src="./Assets/images/Skin_Room_2_Img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Skin Room">
         <img src="./Assets/images/Dental_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
         <img src="./Assets/images/Dental_Room_2.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Dental Room">
-        <!-- Hidden Images -->
         <img src="./Assets/images/Patients_waiting_area.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Waiting Area">
         <img src="./Assets/images/Sterilization_room.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Sterilization">
         <img src="./Assets/images/Dental_Room_1_img.webp" class="gallery-img h-32 md:h-40 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02] hidden" alt="Dental Room">
@@ -321,54 +303,18 @@
         <button id="showMoreInterior" class="px-5 md:px-6 py-2 bg-[#d4af37] text-white rounded-full text-xs md:text-sm hover:bg-[#c19c2b] transition">Show More</button>
       </div>
     </div>
-
-    <!-- Treatment Gallery -->
     <div class="relative z-10">
-      <h3 class="text-xl md:text-2xl font-serif text-accent text-center mb-4 md:mb-6">Treatment Gallery</h3>
-
+      <h3 class="text-xl md:text-2xl font-serif text-accent dark:text-[#f5d98b] text-center mb-4 md:mb-6">Treatment Gallery</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQq2ly1k8md/">
-          <img src="./Assets/images/reel_thumb_1.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div>
-
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRCPdNqkwGV/">
-          <img src="./Assets/images/reel_thumb_2.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div>
-
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRT1AKpCtmi/">
-          <img src="./Assets/images/insta_thumb_3 .webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div>
-
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQqb1noEzYi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
-          <img src="./Assets/images/reel_thumb_4.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div>
-
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DW-sZh7j4JH/?igsh=MTNwMDA4ZG01b2F4OA==">
-          <img src="./Assets/images/reel_thumb_5.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div>
-
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DVgCfP3jnU6/?igsh=anZpdnozMjZoZjli">
-          <img src="./Assets/images/reel_thumb_6.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div>
-
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DVqeeHpiXSW/?igsh=MXNiY2h4YWVxeDV6eg==">
-          <img src="./Assets/images/reel_thumb_7.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div>
-<!-- 
-        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQqb1noEzYi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==">
-          <img src="./Assets/images/reel_thumb_4.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video">
-          <div class="play-overlay">▶</div>
-        </div> -->
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQq2ly1k8md/"><img src="./Assets/images/reel_thumb_1.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video"><div class="play-overlay">▶</div></div>
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRCPdNqkwGV/"><img src="./Assets/images/reel_thumb_2.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video"><div class="play-overlay">▶</div></div>
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DRT1AKpCtmi/"><img src="./Assets/images/insta_thumb_3 .webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video"><div class="play-overlay">▶</div></div>
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DQqb1noEzYi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="><img src="./Assets/images/reel_thumb_4.webp" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video"><div class="play-overlay">▶</div></div>
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DW-sZh7j4JH/?igsh=MTNwMDA4ZG01b2F4OA=="><img src="./Assets/images/reel_thumb_5.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video"><div class="play-overlay">▶</div></div>
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DVgCfP3jnU6/?igsh=anZpdnozMjZoZjli"><img src="./Assets/images/reel_thumb_6.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video"><div class="play-overlay">▶</div></div>
+        <div class="video-thumb cursor-pointer" data-reel="https://www.instagram.com/reel/DVqeeHpiXSW/?igsh=MXNiY2h4YWVxeDV6eg=="><img src="./Assets/images/reel_thumb_7.png" class="h-40 md:h-48 w-full object-cover rounded-lg shadow-md hover:shadow-xl transition-transform hover:scale-[1.02]" alt="Treatment Video"><div class="play-overlay">▶</div></div>
       </div>
     </div>
-
     <!-- Video Modal -->
     <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50 p-4">
       <span id="closeVideo" class="absolute top-4 md:top-6 right-4 md:right-8 text-white text-2xl md:text-3xl cursor-pointer hover:text-[#d4af37]">&times;</span>
@@ -377,352 +323,154 @@
   </section>
 
   <!-- Doctors Section -->
-  <section id="doctors" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 relative overflow-hidden">
+  <section id="doctors" class="py-12 md:py-24 px-4 md:px-6 lg:px-20 relative overflow-hidden bg-[#eee7e2] dark:bg-[#120c06]">
     <canvas id="sparkles-doctors" class="sparkle-bg"></canvas>
-
     <div class="relative z-10 text-center mb-8 md:mb-12">
-      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Our Doctors</h2>
-      <p class="text-[#444] text-sm md:text-base">Meet the professionals behind every confident smile.</p>
+      <h2 class="text-2xl md:text-3xl font-serif text-accent dark:text-[#f5d98b] mb-2">Our Doctors</h2>
+      <p class="text-[#444] dark:text-[#a89880] text-sm md:text-base">Meet the professionals behind every confident smile.</p>
     </div>
-
     <div id="doctor-grid" class="relative z-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-      <!-- Doctor Cards -->
-      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Aleena Romeo</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">BDS, FMAC</h4>
-        <p class="text-xs md:text-sm text-[#555]">Chief Dental Surgeon & Aesthetic Consultant</p>
-      </div>
-
-      <!-- <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Naheema</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">BDS, FMAC</h4>
-        <p class="text-xs md:text-sm text-[#555]">Resident Dentist & Cosmetologist</p>
-      </div> -->
-
-      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Nebin Noushad</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">BDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Resident Dentist</p>
-      </div>
-
-      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Namitha</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS, FIBOMS, FMAC, OMFS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Oral and Maxillofacial Surgeon & Cosmetologist</p>
-      </div>
-
-      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Krishnalal</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Oral and Maxillofacial Surgeon</p>
-      </div>
-
-      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Amal Lathief</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Prosthodontist</p>
-      </div>
-
-      <div class="doctor-card bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Vishnu S</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Endodontist</p>
-      </div>
-
-      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Manu Bhaskar</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Implantologist</p>
-      </div>
-
-      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Deepthi Cherian</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Periodontist & Laser Specialist</p>
-      </div>
-
-      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Amrutha</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Orthodontist</p>
-      </div>
-
-      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Tahir CV</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Orthodontist</p>
-      </div>
-
-      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Ahalia</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Pedodontist</p>
-      </div>
-
-      <div class="doctor-card hidden bg-white p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center">
-        <h3 class="font-serif text-lg md:text-xl text-accent mb-1">Dr. Athul Vishwan</h3>
-        <h4 class="font-serif text-sm md:text-base text-accent">MDS</h4>
-        <p class="text-xs md:text-sm text-[#555]">Fellowship in Endodontics</p>
-      </div>
+      <div class="doctor-card dm-card p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Aleena Romeo</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">BDS, FMAC</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Chief Dental Surgeon & Aesthetic Consultant</p></div>
+      <div class="doctor-card dm-card p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Nebin Noushad</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">BDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Resident Dentist</p></div>
+      <div class="doctor-card dm-card p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Namitha</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS, FIBOMS, FMAC, OMFS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Oral and Maxillofacial Surgeon & Cosmetologist</p></div>
+      <div class="doctor-card dm-card p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Krishnalal</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Oral and Maxillofacial Surgeon</p></div>
+      <div class="doctor-card dm-card p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Amal Lathief</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Prosthodontist</p></div>
+      <div class="doctor-card dm-card p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Vishnu S</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Endodontist</p></div>
+      <div class="doctor-card dm-card hidden p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Manu Bhaskar</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Implantologist</p></div>
+      <div class="doctor-card dm-card hidden p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Deepthi Cherian</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Periodontist & Laser Specialist</p></div>
+      <div class="doctor-card dm-card hidden p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Amrutha</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Orthodontist</p></div>
+      <div class="doctor-card dm-card hidden p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Tahir CV</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Orthodontist</p></div>
+      <div class="doctor-card dm-card hidden p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Ahalia</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Pedodontist</p></div>
+      <div class="doctor-card dm-card hidden p-6 md:p-8 rounded-xl shadow-md border-t-4 border-[#d4af37] text-center"><h3 class="font-serif text-lg md:text-xl text-accent dark:text-[#f5d98b] mb-1">Dr. Athul Vishwan</h3><h4 class="font-serif text-sm md:text-base text-accent dark:text-[#d4af37]">MDS</h4><p class="text-xs md:text-sm text-[#555] dark:text-[#9e917f]">Fellowship in Endodontics</p></div>
     </div>
-
     <div class="relative z-10 text-center mt-8 md:mt-12">
-      <button id="show-more-btn" class="bg-[#d4af37] text-white font-medium px-6 md:px-8 py-2 md:py-3 rounded-full shadow-md hover:bg-[#b8962e] transition-all duration-300 text-sm md:text-base">
-        Show More
-      </button>
+      <button id="show-more-btn" class="bg-[#d4af37] text-white font-medium px-6 md:px-8 py-2 md:py-3 rounded-full shadow-md hover:bg-[#b8962e] transition-all duration-300 text-sm md:text-base">Show More</button>
     </div>
   </section>
 
   <!-- Reviews Section -->
-  <section id="reviews" class="py-12 md:py-20 px-4 md:px-6 bg-[#f8f6f2]">
+  <section id="reviews" class="py-12 md:py-20 px-4 md:px-6 bg-[#f8f6f2] dark:bg-[#0e0904]">
     <div class="text-center mb-8 md:mb-12">
-      <h2 class="text-2xl md:text-3xl font-serif text-accent mb-2">Patient Reviews</h2>
-      <p class="text-gray-600 text-sm md:text-base">See what our patients say about Auralia Dental and Cosmetic Excellence</p>
+      <h2 class="text-2xl md:text-3xl font-serif text-accent dark:text-[#f5d98b] mb-2">Patient Reviews</h2>
+      <p class="text-gray-600 dark:text-[#a89880] text-sm md:text-base">See what our patients say about Auralia Dental and Cosmetic Excellence</p>
     </div>
     <div class="elfsight-app-b1453712-25fd-43eb-86c0-d7bb48911a72" data-elfsight-app-lazy></div>
   </section>
 
-    <!-- Appointment Section -->
-    <section id="appointment"
-      class="relative py-14 md:py-24 px-4
-            bg-gradient-to-b from-[#fdfcf9] via-[#f8f7f3] to-[#f1eee8]
-            overflow-hidden">
-
-      <!-- subtle glow -->
-      <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute -top-24 left-1/2 -translate-x-1/2
-                    w-[500px] h-[500px]
-                    bg-[#d4af37]/10 rounded-full blur-3xl">
-        </div>
+  <!-- Appointment Section -->
+  <section id="appointment"
+    class="relative py-14 md:py-24 px-4 overflow-hidden
+          bg-gradient-to-b from-[#fdfcf9] via-[#f8f7f3] to-[#f1eee8]
+          dark:from-[#1a0d04] dark:via-[#140a02] dark:to-[#0e0801]">
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#d4af37]/8 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-72 h-72 bg-[#5f1a1f]/5 rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative z-10 max-w-2xl mx-auto">
+      <div class="text-center mb-8 md:mb-10">
+        <span class="appt-label">&#10022; Premium Care</span>
+        <h2 class="text-2xl md:text-4xl font-serif text-[#5f1a1f] dark:text-[#f5d98b] mt-3 mb-3">Book Your Appointment</h2>
+        <p class="text-gray-500 dark:text-[#a89880] text-xs md:text-sm max-w-lg mx-auto">Experience premium dental &amp; aesthetic care in a calm, refined environment.</p>
       </div>
-
-      <div class="relative z-10 max-w-3xl mx-auto text-center">
-
-        <!-- Heading -->
-        <h2 class="text-2xl md:text-4xl font-serif text-[#5f1a1f] mb-3">
-          Book Your Appointment
-        </h2>
-
-        <p class="text-gray-600 text-xs md:text-sm max-w-xl mx-auto mb-8">
-          Experience premium dental & aesthetic care in a calm, refined environment.
-        </p>
-
-        <!-- Card -->
-        <div
-          class="bg-white/90 backdrop-blur-xl
-                rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.12)]
-                ring-1 ring-[#d4af37]/30
-                p-6 md:p-10">
-
-          <!-- Trust row -->
-          <div class="flex flex-wrap justify-center gap-4 mb-6 text-[11px] md:text-xs text-gray-500">
-            <span>⭐ Trusted by 1000+ Patients</span>
-            <span>🕒 Same-day Appointments</span>
-            <span>🦷 Certified Specialists</span>
+      <div class="appt-trust-row">
+        <div class="appt-trust-badge dark:appt-trust-badge-dark"><span>&#128336;</span> Same-day Appointments</div>
+        <div class="appt-trust-badge dark:appt-trust-badge-dark"><span>&#129463;</span> Certified Specialists</div>
+      </div>
+      <div class="appt-card dark:appt-card-dark">
+        <div class="appt-card-header">
+          <i class="fas fa-calendar-check appt-header-icon"></i>
+          <span>Fill in your details below</span>
+        </div>
+        <form id="appointmentForm" class="appt-form">
+          <div class="appt-field-group">
+            <label class="appt-label-field dark:text-[#c9bfa8]" for="name"><i class="fas fa-user appt-field-icon"></i> Full Name</label>
+            <input type="text" id="name" placeholder="e.g. Riya Thomas" class="appt-input dark:appt-input-dark" />
           </div>
-
-          <!-- Form -->
-          <form id="appointmentForm" class="grid gap-3 md:gap-4">
-
-            <input type="text" id="name" placeholder="Full Name"
-              class="border border-gray-300 rounded-xl p-3
-                    focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
-                    text-sm md:text-base" />
-
-            <div class="flex">
-              <span
-                class="inline-flex items-center px-3
-                      bg-[#f3f2ec] border border-r-0 border-gray-300
-                      rounded-l-xl text-gray-600 text-xs md:text-sm">
-                +91
-              </span>
-              <input type="tel" id="phone" placeholder="WhatsApp Number"
-                class="w-full border border-gray-300 rounded-r-xl p-3
-                      focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
-                      text-sm md:text-base"
-                maxlength="10" />
+          <div class="appt-field-group">
+            <label class="appt-label-field dark:text-[#c9bfa8]" for="phone"><i class="fab fa-whatsapp appt-field-icon" style="color:#25D366"></i> WhatsApp Number</label>
+            <div class="appt-phone-wrap">
+              <span class="appt-prefix dark:appt-prefix-dark">&#127470;&#127475; +91</span>
+              <input type="tel" id="phone" placeholder="10-digit number" class="appt-input appt-phone-input dark:appt-input-dark" maxlength="10" />
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-              <!-- Date Field -->
-              <div class="relative">
-                <input type="date" id="date" placeholder="Select Date"
-                  class="w-full border border-gray-300 rounded-xl pl-10 pr-3 py-3
-                        focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
-                        text-sm md:text-base bg-[#fff9e6] appearance-none" />
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
-                  📅
-                </span>
-              </div>
-
-              <!-- Time Field -->
-              <div class="relative">
-                <input type="time" id="time" placeholder="Select Time"
-                  class="w-full border border-gray-300 rounded-xl pl-10 pr-3 py-3
-                        focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40
-                        text-sm md:text-base bg-[#fff9e6] appearance-none" />
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
-                  ⏰
-                </span>
-              </div>
-
+          </div>
+          <div class="appt-date-time-row">
+            <div class="appt-field-group">
+              <label class="appt-label-field dark:text-[#c9bfa8]" for="date"><i class="fas fa-calendar appt-field-icon"></i> Preferred Date</label>
+              <input type="date" id="date" class="appt-input appt-date-input dark:appt-input-dark" />
             </div>
-
-
-
-            <textarea id="description"
-              placeholder="Describe your concern"
-              class="border border-gray-300 rounded-xl p-3 w-full
-                    focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40"></textarea>
-
-
-            <!-- CTA -->
-            <button type="submit"
-              class="cta-submit relative mt-3 w-full overflow-hidden
-                    bg-gradient-to-r from-[#f5d98b] via-[#d4af37] to-[#b8962f]
-                    text-[#111] font-bold tracking-widest uppercase
-                    rounded-full py-4 md:py-5 text-sm md:text-base
-                    flex items-center justify-center gap-3 cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-5 h-5 fill-[#1a5c30]">
-                <path d="M380.9 97.1C339 34.2 274.8 0 203.3 0 91.8 0 0 91.8 0 203.3c0 35.7 9.3 70.5 27 101.2L0 416l115.5-30.3c29.5 16.1 62.7 24.6 96.3 24.6 111.5 0 203.3-91.8 203.3-203.3 0-54.3-21.1-105.4-59.5-143.9zM203.3 372.2c-30.2 0-59.8-8.1-85.6-23.4l-6.1-3.6-63.5 16.6 17-62.1-4-6.3c-16.8-26.8-25.7-57.7-25.7-89.4 0-93 75.7-168.7 168.7-168.7 45 0 87.3 17.5 119.1 49.3s49.3 74.1 49.3 119.1c.1 93-75.6 168.7-168.2 168.7zm92.5-126.4c-5.1-2.5-30-14.8-34.6-16.5-4.7-1.7-8.1-2.5-11.5 2.5s-13.2 16.5-16.2 19.9c-3 3.4-6 3.8-11.1 1.3s-21.6-8-41.1-25.4c-15.2-13.6-25.5-30.4-28.5-35.5s-.3-7.7 2.2-10.2c2.3-2.3 5.1-6 7.6-9s3.4-5.1 5.1-8.5.8-6.4-.4-9-11.5-27.7-15.8-37.9c-4.1-10-8.3-8.6-11.5-8.8-3-.2-6.4-.2-9.8-.2s-9 1.3-13.7 6.4-18 17.6-18 42.9 18.4 49.8 21 53.2 36.1 55.1 87.4 77.3c12.2 5.3 21.7 8.4 29.1 10.8 12.3 3.9 23.5 3.3 32.3 2 9.9-1.5 30-12.3 34.2-24.1s4.2-22 2.9-24.1-4.6-3.4-9.7-5.9z"/>
-              </svg>
-              Confirm via WhatsApp ✨
-            </button>
-
-            <p class="text-[10px] md:text-xs text-gray-500 mt-1 flex items-center justify-center gap-1.5">
-              <span class="relative inline-flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-              </span>
-              Opens WhatsApp instantly for confirmation
-            </p>
-
-          </form>
-        </div>
+            <div class="appt-field-group">
+              <label class="appt-label-field dark:text-[#c9bfa8]" for="time"><i class="fas fa-clock appt-field-icon"></i> Preferred Time</label>
+              <input type="time" id="time" class="appt-input appt-date-input dark:appt-input-dark" />
+            </div>
+          </div>
+          <div class="appt-field-group">
+            <label class="appt-label-field dark:text-[#c9bfa8]" for="description"><i class="fas fa-comment-medical appt-field-icon"></i> Your Concern <span class="appt-optional">(optional)</span></label>
+            <textarea id="description" rows="3" placeholder="Briefly describe your dental or cosmetic concern..." class="appt-input appt-textarea dark:appt-input-dark"></textarea>
+          </div>
+          <button type="submit" class="appt-submit-btn">
+            <span class="appt-submit-shimmer"></span>
+            <i class="fab fa-whatsapp appt-submit-icon"></i>
+            <span>Confirm via WhatsApp</span>
+            <i class="fas fa-arrow-right appt-arrow-icon"></i>
+          </button>
+          <p class="appt-redirect-note dark:text-[#6b6050]">
+            <i class="fas fa-lock" style="font-size:10px; opacity:0.5"></i>
+            You'll be redirected to WhatsApp to confirm your booking
+          </p>
+        </form>
       </div>
-    </section>
-
+    </div>
+  </section>
 
   <!-- Footer -->
-  <footer class="bg-gradient-to-b from-[#8b6a4e] to-[#5e3d29] text-white py-8 md:py-10 px-4 md:px-6 lg:px-16">
+  <footer class="bg-gradient-to-b from-[#8b6a4e] to-[#5e3d29] dark:from-[#1a0d04] dark:to-[#0a0501] text-white py-8 md:py-10 px-4 md:px-6 lg:px-16">
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-      
       <div>
         <h3 class="text-base md:text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Our Location</h3>
         <div class="rounded-xl overflow-hidden shadow-lg ring-1 ring-[#d4af37]/40 mb-3">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.555531428253!2d76.639!3d9.9816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba65f57c315a2ed%3A0x70c0fd493b782b25!2sAuralia%20Dental%20%26%20Cosmetic%20Excellence!5e1!3m2!1sen!2sin!4v1762454965656!5m2!1sen!2sin"
-            width="100%" 
-            height="180" 
-            style="border:0;" 
-            allowfullscreen 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.555531428253!2d76.639!3d9.9816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba65f57c315a2ed%3A0x70c0fd493b782b25!2sAuralia%20Dental%20%26%20Cosmetic%20Excellence!5e1!3m2!1sen!2sin!4v1762454965656!5m2!1sen!2sin" width="100%" height="180" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-        <p class="text-xs md:text-sm text-gray-200">
-          📍 <a href="https://maps.app.goo.gl/QkZCdTBwVWb7rM6w9" target="_blank" class="hover:text-[#d4af37] underline underline-offset-4 transition">View on Google Maps</a>
-        </p>
+        <p class="text-xs md:text-sm text-gray-200">📍 <a href="https://maps.app.goo.gl/QkZCdTBwVWb7rM6w9" target="_blank" class="hover:text-[#d4af37] underline underline-offset-4 transition">View on Google Maps</a></p>
       </div>
-
       <div>
         <h3 class="text-base md:text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Say Hello</h3>
-        <p class="text-xs md:text-sm text-gray-200 mb-3 leading-relaxed">
-          We'd love to hear from you. Reach out with any questions or appointment requests.
-        </p>
-        <p class="text-xs md:text-sm font-medium mb-2">
-          <i class="fa-solid fa-envelope text-[#d4af37] mr-2"></i>
-          <a href="mailto:auralia272@gmail.com" class="hover:text-[#d4af37] transition">auralia272@gmail.com</a>
-        </p>
-        <p class="text-xs md:text-sm font-medium mb-2">
-          <i class="fa-solid fa-phone text-[#d4af37] mr-2"></i>
-          +91 6282 948 652 | +91 8848 588 136
-        </p>
-        <p class="text-xs md:text-sm leading-relaxed">
-          <i class="fa-solid fa-clock text-[#d4af37] mr-2"></i>
-          Mon – Sat: 9:00 AM – 8:30 PM<br>
-          Sun: 10:30 AM – 3:30 PM
-        </p>
+        <p class="text-xs md:text-sm text-gray-200 mb-3 leading-relaxed">We'd love to hear from you. Reach out with any questions or appointment requests.</p>
+        <p class="text-xs md:text-sm font-medium mb-2"><i class="fa-solid fa-envelope text-[#d4af37] mr-2"></i><a href="mailto:auralia272@gmail.com" class="hover:text-[#d4af37] transition">auralia272@gmail.com</a></p>
+        <p class="text-xs md:text-sm font-medium mb-2"><i class="fa-solid fa-phone text-[#d4af37] mr-2"></i>+91 6282 948 652 | +91 8848 588 136</p>
+        <p class="text-xs md:text-sm leading-relaxed"><i class="fa-solid fa-clock text-[#d4af37] mr-2"></i>Mon – Sat: 9:00 AM – 8:30 PM<br>Sun: 10:30 AM – 3:30 PM</p>
       </div>
-
       <div>
         <h3 class="text-base md:text-lg font-semibold mb-3 tracking-wide text-[#f4e3c1] uppercase">Connect With Us</h3>
         <div class="flex gap-4 md:gap-5 mb-4">
           <a href="https://www.instagram.com/auraliaaesthetics/" class="hover:text-[#d4af37] transition transform hover:scale-110"><i class="fa-brands fa-instagram text-xl md:text-2xl"></i></a>
           <a href="https://www.facebook.com/profile.php?id=61588329542898" class="hover:text-[#d4af37] transition transform hover:scale-110"><i class="fa-brands fa-facebook-f text-xl md:text-2xl"></i></a>
         </div>
-        <p class="text-xs md:text-sm mt-2">
-          <i class="fa-brands fa-whatsapp text-[#25d366] mr-2"></i>
-          <a href="https://wa.me/916282948652" target="_blank" class="hover:text-[#d4af37] transition font-semibold">Chat on WhatsApp</a>
-        </p>
+        <p class="text-xs md:text-sm mt-2"><i class="fa-brands fa-whatsapp text-[#25d366] mr-2"></i><a href="https://wa.me/916282948652" target="_blank" class="hover:text-[#d4af37] transition font-semibold">Chat on WhatsApp</a></p>
       </div>
     </div>
-
     <div class="border-t border-[#d4af37]/40 mt-6 md:mt-8 pt-4 text-center text-[11px] md:text-xs text-gray-300 tracking-wide">
       <p>&copy; 2025 <span class="text-[#f4e3c1] font-medium">Auralia Dental & Cosmetic Excellence</span>. All rights reserved.</p>
     </div>
   </footer>
 
-        <!-- Sticky WhatsApp Button -->
-
-    <!-- Chat bubble tooltip -->
-    <div id="wa-tooltip"
-      class="wa-tooltip fixed bottom-[5.5rem] right-6 z-50
-              bg-[#1a1a1a] text-white text-xs font-medium
-              px-3.5 py-2 rounded-xl shadow-xl
-              max-w-[180px] leading-snug pointer-events-none">
-      👋 Hi! Book your appointment today
+  <!-- WhatsApp Sticky -->
+  <div id="wa-tooltip" class="wa-tooltip fixed bottom-[5.5rem] right-6 z-50 bg-[#1a1a1a] dark:bg-[#2a2010] text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow-xl max-w-[180px] leading-snug pointer-events-none">
+    👋 Hi! Book your appointment today
+    <div class="wa-tooltip-arrow"></div>
+  </div>
+  <a id="wa-btn"
+    href="https://wa.me/916282948652?text=Hello%20I%20would%20like%20to%20book%20an%20appointment"
+    target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
+    class="wa-float group fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#25D366] text-white font-semibold px-5 py-3.5 rounded-full shadow-[0_12px_30px_rgba(37,211,102,0.5)] hover:shadow-[0_16px_40px_rgba(37,211,102,0.7)] active:scale-95 transition-all duration-300 ease-out cursor-pointer">
+    <div class="relative">
+      <span class="wa-ring absolute inset-0 rounded-full bg-[#25D366] pointer-events-none"></span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-6 h-6 fill-white relative z-10 group-hover:rotate-12 transition-transform duration-300">
+        <path d="M380.9 97.1C339 34.2 274.8 0 203.3 0 91.8 0 0 91.8 0 203.3c0 35.7 9.3 70.5 27 101.2L0 416l115.5-30.3c29.5 16.1 62.7 24.6 96.3 24.6 111.5 0 203.3-91.8 203.3-203.3 0-54.3-21.1-105.4-59.5-143.9zM203.3 372.2c-30.2 0-59.8-8.1-85.6-23.4l-6.1-3.6-63.5 16.6 17-62.1-4-6.3c-16.8-26.8-25.7-57.7-25.7-89.4 0-93 75.7-168.7 168.7-168.7 45 0 87.3 17.5 119.1 49.3s49.3 74.1 49.3 119.1c.1 93-75.6 168.7-168.2 168.7zm92.5-126.4c-5.1-2.5-30-14.8-34.6-16.5-4.7-1.7-8.1-2.5-11.5 2.5s-13.2 16.5-16.2 19.9c-3 3.4-6 3.8-11.1 1.3s-21.6-8-41.1-25.4c-15.2-13.6-25.5-30.4-28.5-35.5s-.3-7.7 2.2-10.2c2.3-2.3 5.1-6 7.6-9s3.4-5.1 5.1-8.5 0.8-6.4-0.4-9-11.5-27.7-15.8-37.9c-4.1-10-8.3-8.6-11.5-8.8-3-.2-6.4-.2-9.8-.2s-9 1.3-13.7 6.4-18 17.6-18 42.9 18.4 49.8 21 53.2 36.1 55.1 87.4 77.3c12.2 5.3 21.7 8.4 29.1 10.8 12.3 3.9 23.5 3.3 32.3 2 9.9-1.5 30-12.3 34.2-24.1s4.2-22 2.9-24.1-4.6-3.4-9.7-5.9z"/>
+      </svg>
+      <span id="wa-badge" class="wa-badge absolute -top-2 -right-2 z-20 min-w-[20px] h-5 px-1 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md border-2 border-white leading-none">3</span>
     </div>
-
-    <a id="wa-btn"
-      href="https://wa.me/916282948652?text=Hello%20I%20would%20like%20to%20book%20an%20appointment"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Chat on WhatsApp"
-      class="wa-float group fixed bottom-6 right-6 z-50
-              flex items-center gap-3
-              bg-[#25D366]
-              text-white font-semibold
-              px-5 py-3.5
-              rounded-full
-              shadow-[0_12px_30px_rgba(37,211,102,0.5)]
-              hover:shadow-[0_16px_40px_rgba(37,211,102,0.7)]
-              active:scale-95
-              transition-all duration-300 ease-out
-              cursor-pointer">
-
-      <!-- Icon + badge wrapper -->
-      <div class="relative">
-
-        <!-- Outer glow ring -->
-        <span class="wa-ring absolute inset-0 rounded-full bg-[#25D366] pointer-events-none"></span>
-
-        <!-- WA Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            class="w-6 h-6 fill-white relative z-10
-                    group-hover:rotate-12 transition-transform duration-300">
-          <path d="M380.9 97.1C339 34.2 274.8 0 203.3 0 91.8 0 0 91.8 0 203.3c0 35.7 9.3 70.5 27 101.2L0 416l115.5-30.3c29.5 16.1 62.7 24.6 96.3 24.6 111.5 0 203.3-91.8 203.3-203.3 0-54.3-21.1-105.4-59.5-143.9zM203.3 372.2c-30.2 0-59.8-8.1-85.6-23.4l-6.1-3.6-63.5 16.6 17-62.1-4-6.3c-16.8-26.8-25.7-57.7-25.7-89.4 0-93 75.7-168.7 168.7-168.7 45 0 87.3 17.5 119.1 49.3s49.3 74.1 49.3 119.1c.1 93-75.6 168.7-168.2 168.7zm92.5-126.4c-5.1-2.5-30-14.8-34.6-16.5-4.7-1.7-8.1-2.5-11.5 2.5s-13.2 16.5-16.2 19.9c-3 3.4-6 3.8-11.1 1.3s-21.6-8-41.1-25.4c-15.2-13.6-25.5-30.4-28.5-35.5s-.3-7.7 2.2-10.2c2.3-2.3 5.1-6 7.6-9s3.4-5.1 5.1-8.5 0.8-6.4-0.4-9-11.5-27.7-15.8-37.9c-4.1-10-8.3-8.6-11.5-8.8-3-.2-6.4-.2-9.8-.2s-9 1.3-13.7 6.4-18 17.6-18 42.9 18.4 49.8 21 53.2 36.1 55.1 87.4 77.3c12.2 5.3 21.7 8.4 29.1 10.8 12.3 3.9 23.5 3.3 32.3 2 9.9-1.5 30-12.3 34.2-24.1s4.2-22 2.9-24.1-4.6-3.4-9.7-5.9z"/>
-        </svg>
-
-        <!-- Message count badge -->
-        <span id="wa-badge"
-          class="wa-badge absolute -top-2 -right-2 z-20
-                  min-w-[20px] h-5 px-1
-                  bg-red-500 text-white text-[10px] font-bold
-                  rounded-full flex items-center justify-center
-                  shadow-md border-2 border-white
-                  leading-none">
-          3
-        </span>
-      </div>
-
-      <span class="hidden sm:inline text-[15px] tracking-wide
-                  group-hover:tracking-wider transition-all duration-300">
-        Chat on WhatsApp
-      </span>
-    </a>
+    <span class="hidden sm:inline text-[15px] tracking-wide group-hover:tracking-wider transition-all duration-300">Chat on WhatsApp</span>
+  </a>
 
   <script async src="https://www.instagram.com/embed.js"></script>
   <script src="https://elfsightcdn.com/platform.js" async></script>

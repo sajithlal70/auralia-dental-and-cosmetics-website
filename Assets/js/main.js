@@ -146,7 +146,7 @@ const navbar = document.getElementById("navbar");
     const timeEl = document.getElementById("time");
     const descEl = document.getElementById("description");
 
-    const CLINIC_WHATSAPP = "918089485892"; 
+    const CLINIC_WHATSAPP = "916282948652";
 
     // Disable past dates
     const today = new Date();
@@ -401,4 +401,43 @@ const navbar = document.getElementById("navbar");
   setTimeout(function () {
     drawFaviconWithBadge(MSG_COUNT);
   }, 3000);
+})();
+
+// ===========================
+// DARK MODE TOGGLE
+// ===========================
+(function () {
+  const html = document.documentElement;
+  const KEY = 'auraliaTheme'; // single consistent key
+
+  function applyTheme(isDark) {
+    if (isDark) {
+      html.classList.add('dark');
+      localStorage.setItem(KEY, 'dark');
+    } else {
+      html.classList.remove('dark');
+      localStorage.setItem(KEY, 'light');
+    }
+  }
+
+  function attachToggle(btn) {
+    if (!btn) return;
+    // Remove any stale listeners by cloning
+    const fresh = btn.cloneNode(true);
+    btn.parentNode.replaceChild(fresh, btn);
+    fresh.addEventListener('click', () => {
+      applyTheme(!html.classList.contains('dark'));
+    });
+  }
+
+  function init() {
+    attachToggle(document.getElementById('theme-toggle'));
+    attachToggle(document.getElementById('theme-toggle-mobile'));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
