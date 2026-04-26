@@ -146,7 +146,7 @@ const navbar = document.getElementById("navbar");
     const timeEl = document.getElementById("time");
     const descEl = document.getElementById("description");
 
-    const CLINIC_WHATSAPP = "916282948652"; 
+    const CLINIC_WHATSAPP = "918089485892"; 
 
     // Disable past dates
     const today = new Date();
@@ -207,46 +207,198 @@ const navbar = document.getElementById("navbar");
       }, 1800);
     });
   });
+// WhatsApp badge count animation
+(function() {
+  const badge = document.getElementById('wa-badge');
+  const tooltip = document.getElementById('wa-tooltip');
+  if (!badge) return;
 
-    // ── WhatsApp Badge & Tooltip ──────────────────────────────────────────────
-    (function () {
-      const badge   = document.getElementById("wa-badge");
-      const tooltip = document.getElementById("wa-tooltip");
-      const btn     = document.getElementById("wa-btn");
+  const messages = [1, 2, 3];
+  let idx = 0;
 
-      // Count-up animation: 1 → 2 → 3
-      let count = 1;
-      badge.textContent = count;
-      const countUp = setInterval(() => {
-        count++;
-        badge.textContent = count;
-        badge.classList.remove("wa-badge-shake");
-        void badge.offsetWidth; // reflow to restart animation
-        badge.classList.add("wa-badge-shake");
-        if (count >= 3) clearInterval(countUp);
-      }, 1800);
+  // Count up to 3 on load
+  function animateCount() {
+    if (idx < messages.length) {
+      badge.textContent = messages[idx];
+      badge.style.transform = 'scale(1.4)';
+      setTimeout(() => { badge.style.transform = ''; }, 250);
+      idx++;
+      if (idx < messages.length) setTimeout(animateCount, 800);
+    }
+  }
+  setTimeout(animateCount, 2000);
 
-      // Periodic badge shake every 6 s after count-up done
-      setTimeout(() => {
-        setInterval(() => {
-          badge.classList.remove("wa-badge-shake");
-          void badge.offsetWidth;
-          badge.classList.add("wa-badge-shake");
-        }, 6000);
-      }, 5400);
+  // Auto-hide tooltip after 6 seconds
+  if (tooltip) {
+    setTimeout(() => {
+      tooltip.style.transition = 'opacity 0.5s';
+      tooltip.style.opacity = '0';
+      setTimeout(() => tooltip.remove(), 600);
+    }, 6000);
+  }
 
-      // Auto-hide tooltip after 6 s
-      setTimeout(() => {
-        tooltip.style.transition = "opacity 0.5s";
-        tooltip.style.opacity   = "0";
-        setTimeout(() => tooltip.style.display = "none", 500);
-      }, 6000);
+  // Reset badge when user clicks WhatsApp
+  const waBtn = document.getElementById('wa-btn');
+  if (waBtn) {
+    waBtn.addEventListener('click', () => {
+      badge.style.transition = 'transform 0.3s, opacity 0.3s';
+      badge.style.transform = 'scale(0)';
+      badge.style.opacity = '0';
+    });
+  }
+})();
 
-      // Reset badge on click (messages "read")
-      btn.addEventListener("click", () => {
-        badge.style.transition = "transform 0.3s, opacity 0.3s";
-        badge.style.transform  = "scale(0)";
-        badge.style.opacity    = "0";
-        setTimeout(() => badge.style.display = "none", 300);
-      });
-    })();
+// ===========================
+// FAVICON MESSAGE COUNT BLINK
+// ===========================
+(function () {
+  const ORIGINAL_FAVICON = './favicon.ico';
+  const MSG_COUNT = 3;
+  let blinkInterval = null;
+  let showBadge = true;
+
+  function drawFaviconWithBadge(count) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function () {
+      // Draw base favicon
+      ctx.clearRect(0, 0, 32, 32);
+      ctx.drawImage(img, 0, 0, 32, 32);
+
+      // Draw red badge circle
+      const badgeX = 24;
+      const badgeY = 6;
+      const radius = 8;
+      ctx.beginPath();
+      ctx.arc(badgeX, badgeY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff3b3b';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Draw count number
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(count > 9 ? '9+' : String(count), badgeX, badgeY + 0.5);
+
+      setFavicon(canvas.toDataURL('image/png'));
+    };
+    img.onerror = function () {
+      // Fallback: plain red dot favicon if image fails to load
+      ctx.clearRect(0, 0, 32, 32);
+      ctx.beginPath();
+      ctx.arc(16, 16, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#5f1a1f';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(24, 8, 7, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff3b3b';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 9px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(count), 24, 8.5);
+
+      setFavicon(canvas.toDataURL('image/png'));
+    };
+    img.src = ORIGINAL_FAVICON;
+  }
+
+  function drawPlainFavicon() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, 32, 32);
+      setFavicon(canvas.toDataURL('image/png'));
+    };
+    img.onerror = function () {
+      // Fallback plain icon
+      ctx.beginPath();
+      ctx.arc(16, 16, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#5f1a1f';
+      ctx.fill();
+      setFavicon(canvas.toDataURL('image/png'));
+    };
+    img.src = ORIGINAL_FAVICON;
+  }
+
+  function setFavicon(href) {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.type = 'image/png';
+    link.href = href;
+  }
+
+  function startBlink() {
+    // Blink: alternate between badge favicon and plain favicon every 1s
+    blinkInterval = setInterval(function () {
+      if (showBadge) {
+        drawFaviconWithBadge(MSG_COUNT);
+      } else {
+        drawPlainFavicon();
+      }
+      showBadge = !showBadge;
+    }, 1000);
+  }
+
+  function stopBlink() {
+    clearInterval(blinkInterval);
+    blinkInterval = null;
+    drawFaviconWithBadge(MSG_COUNT); // leave badge visible when tab regains focus
+  }
+
+  // Start blinking when tab is hidden, stop when visible
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      startBlink();
+    } else {
+      stopBlink();
+      // Update title back
+      document.title = 'Auralia Dental & Cosmetic Excellence';
+    }
+  });
+
+  // Also blink the page title for extra attention
+  let titleBlink = null;
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      let toggle = true;
+      titleBlink = setInterval(function () {
+        document.title = toggle
+          ? '(' + MSG_COUNT + ') New Messages 💬'
+          : 'Auralia Dental & Cosmetic Excellence';
+        toggle = !toggle;
+      }, 1200);
+    } else {
+      clearInterval(titleBlink);
+      document.title = 'Auralia Dental & Cosmetic Excellence';
+    }
+  });
+
+  // Show badge immediately on load after 3s
+  setTimeout(function () {
+    drawFaviconWithBadge(MSG_COUNT);
+  }, 3000);
+})();
