@@ -1,6 +1,4 @@
-   
-   
-   const navbar = document.getElementById("navbar");
+const navbar = document.getElementById("navbar");
       window.addEventListener("scroll", () => {
         if (window.scrollY > 60) {
           navbar.classList.add(
@@ -148,7 +146,7 @@
     const timeEl = document.getElementById("time");
     const descEl = document.getElementById("description");
 
-    const CLINIC_WHATSAPP = "918089485892"; 
+    const CLINIC_WHATSAPP = "916282948652"; 
 
     // Disable past dates
     const today = new Date();
@@ -209,3 +207,46 @@
       }, 1800);
     });
   });
+
+    // ── WhatsApp Badge & Tooltip ──────────────────────────────────────────────
+    (function () {
+      const badge   = document.getElementById("wa-badge");
+      const tooltip = document.getElementById("wa-tooltip");
+      const btn     = document.getElementById("wa-btn");
+
+      // Count-up animation: 1 → 2 → 3
+      let count = 1;
+      badge.textContent = count;
+      const countUp = setInterval(() => {
+        count++;
+        badge.textContent = count;
+        badge.classList.remove("wa-badge-shake");
+        void badge.offsetWidth; // reflow to restart animation
+        badge.classList.add("wa-badge-shake");
+        if (count >= 3) clearInterval(countUp);
+      }, 1800);
+
+      // Periodic badge shake every 6 s after count-up done
+      setTimeout(() => {
+        setInterval(() => {
+          badge.classList.remove("wa-badge-shake");
+          void badge.offsetWidth;
+          badge.classList.add("wa-badge-shake");
+        }, 6000);
+      }, 5400);
+
+      // Auto-hide tooltip after 6 s
+      setTimeout(() => {
+        tooltip.style.transition = "opacity 0.5s";
+        tooltip.style.opacity   = "0";
+        setTimeout(() => tooltip.style.display = "none", 500);
+      }, 6000);
+
+      // Reset badge on click (messages "read")
+      btn.addEventListener("click", () => {
+        badge.style.transition = "transform 0.3s, opacity 0.3s";
+        badge.style.transform  = "scale(0)";
+        badge.style.opacity    = "0";
+        setTimeout(() => badge.style.display = "none", 300);
+      });
+    })();
